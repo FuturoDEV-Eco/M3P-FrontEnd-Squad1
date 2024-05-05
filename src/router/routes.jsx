@@ -3,6 +3,7 @@ import PaginaLogin from "../pages/PaginaLogin";
 import App from "../App";
 import PrivateRoute from "./PrivateRoute";
 import PaginaCadastroUsuario from "../pages/PaginaCadastroUsuario";
+import PaginaHome from "../pages/PaginaHome";
 
 const routes = createBrowserRouter([
   {
@@ -23,7 +24,7 @@ const routes = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <h1>Dashboard</h1>
+        element: <PaginaHome />
       }
     ]
   }
