@@ -1,9 +1,11 @@
 import { createContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export const UsuariosContext = createContext();
 
 export const UsuariosContextProvider = ({ children }) => {
   const [usuarios, setUsuarios] = useState([]);
+
   useEffect(() => {
     getUsuarios();
   }, []);
@@ -12,7 +14,14 @@ export const UsuariosContextProvider = ({ children }) => {
     fetch("http://localhost:3000/usuarios")
       .then((response) => response.json())
       .then((dados) => setUsuarios(dados))
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        console.error(error);
+        toast.error("Erro ao buscar usuarios!", {
+          position: "top-right",
+          autoClose: 5000,
+          theme: "colored"
+        });
+      });
   }
 
   function cadastrarUsuario(usuario) {
@@ -30,21 +39,43 @@ export const UsuariosContextProvider = ({ children }) => {
               body: JSON.stringify(usuario)
             })
               .then(() => {
-                console.log("Usuário cadastrado com sucesso");
+                toast.success("Usuário cadastrado com sucesso!", {
+                  position: "top-right",
+                  autoClose: 5000,
+                  theme: "colored"
+                });
                 getUsuarios();
               })
               .catch((error) => {
-                console.log("Erro ao cadastrar usuário", error);
+                console.error("Erro ao cadastrar usuário", error);
+                toast.error("Erro ao cadastrar usuário!", {
+                  position: "top-right",
+                  autoClose: 5000,
+                  theme: "colored"
+                });
               });
           } else {
-            console.log("Usuário com este CPF já está cadastrado");
+            toast.error("Usuário com este CPF já está cadastrado", {
+              position: "top-right",
+              autoClose: 5000,
+              theme: "colored"
+            });
           }
         })
         .catch((error) => {
-          console.log("Erro ao buscar usuários", error);
+          console.error("Erro ao buscar usuários", error);
+          toast.error("Erro ao buscar usuários", {
+            position: "top-right",
+            autoClose: 5000,
+            theme: "colored"
+          });
         });
     } else {
-      console.log("Dados do usuário inválidos");
+      toast.error("Dados do usuário inválidos", {
+        position: "top-right",
+        autoClose: 5000,
+        theme: "colored"
+      });
     }
   }
 
@@ -58,20 +89,39 @@ export const UsuariosContextProvider = ({ children }) => {
             method: "DELETE"
           })
             .then(() => {
-              console.log("Usuário deletado com sucesso");
+              toast.success("Usuário deletado com sucesso", {
+                position: "top-right",
+                autoClose: 5000,
+                theme: "colored"
+              });
               getUsuarios();
             })
             .catch((error) => {
-              console.log("Erro ao deletar usuário", error);
+              console.error("Erro ao deletar usuário", error);
+              toast.error("Erro ao deletar usuário", {
+                position: "top-right",
+                autoClose: 5000,
+                theme: "colored"
+              });
             });
         } else {
-          console.log(
-            "Usuário possui pontos de coleta vinculados e não pode ser deletado"
+          toast.error(
+            "Usuário possui pontos de coleta vinculados e não pode ser deletado",
+            {
+              position: "top-right",
+              autoClose: 5000,
+              theme: "colored"
+            }
           );
         }
       })
       .catch((error) => {
-        console.log("Erro ao buscar pontos de coleta", error);
+        console.error("Erro ao buscar pontos de coleta", error);
+        toast.error("Erro ao buscar pontos de coleta", {
+          position: "top-right",
+          autoClose: 5000,
+          theme: "colored"
+        });
       });
   }
 
@@ -87,25 +137,48 @@ export const UsuariosContextProvider = ({ children }) => {
           usuarioExiste = true;
           if (usuario.senha === senha) {
             localStorage.setItem("isAutenticado", true);
-            alert("Usuário logado com sucesso");
+            localStorage.setItem("user", JSON.stringify(usuario.nome));
+            toast.success("Usuário logado com sucesso", {
+              position: "top-right",
+              autoClose: 5000,
+              theme: "colored"
+            });
             window.location.href = "/";
             return;
           }
-          alert("Senha incorreta");
+          toast.error("Senha incorreta", {
+            position: "top-right",
+            autoClose: 5000,
+            theme: "colored"
+          });
           return;
         }
       });
       if (!usuarioExiste) {
-        alert("Não existe usuário com este email");
+        toast.error("Não existe usuário com este email", {
+          position: "top-right",
+          autoClose: 5000,
+          theme: "colored"
+        });
       }
     } catch (error) {
       console.error("Erro na tentativa de login", error);
+      toast.error("Erro na tentativa de login", {
+        position: "top-right",
+        autoClose: 5000,
+        theme: "colored"
+      });
     }
   }
 
   return (
     <UsuariosContext.Provider
-      value={{ usuarios, cadastrarUsuario, deletarUsuario, login }}>
+      value={{
+        usuarios,
+        cadastrarUsuario,
+        deletarUsuario,
+        login
+      }}>
       {children}
     </UsuariosContext.Provider>
   );
