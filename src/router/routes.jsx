@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import PaginaLogin from "../pages/PaginaLogin";
 import App from "../App";
 import PrivateRoute from "./PrivateRoute";
+import PaginaCadastroUsuario from "../pages/PaginaCadastroUsuario";
 
 const routes = createBrowserRouter([
   {
@@ -10,7 +11,7 @@ const routes = createBrowserRouter([
   },
   {
     path: "/usuario/cadastro",
-    element: <h1>Cadastro de Usuário</h1>
+    element: <PaginaCadastroUsuario />
   },
   {
     path: "/",
