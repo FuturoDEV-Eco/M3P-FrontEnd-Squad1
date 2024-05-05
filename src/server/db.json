@@ -1,0 +1,122 @@
+{
+    "usuarios": [
+        {
+            "id": 1,
+            "nome": "Danilo Henrique Galvão",
+            "cpf": "297.536.595-04",
+            "dataNascimento": "1992-02-18",
+            "sexo": "masculino",
+            "email": "danilo_galvao@superigi.com.br",
+            "senha": "T9wcmkFtTO",
+            "endereco": {
+                "cep": "56328-215",
+                "logradouro": "Rua Estrela Altaix",
+                "numero": "881",
+                "bairro": "Vila Eduardo",
+                "cidade": "Petrolina",
+                "estado": "PE"
+            }
+        },
+        {
+            "id": 2,
+            "nome": "Priscila Teresinha Rezende",
+            "cpf": "462.959.281-45",
+            "dataNascimento": "1989-04-06",
+            "sexo": "feminino",
+            "email": "priscila_teresinha_rezende@plastic.com.br",
+            "senha": "JKbqWG6gQ5",
+            "endereco": {
+                "cep": "26277-820",
+                "logradouro": "Rua Valdelice",
+                "numero": "225",
+                "bairro": "Jardim Palmares",
+                "cidade": "Nova Iguaçu",
+                "estado": "RJ"
+            }
+        },
+        {
+            "id": 3,
+            "nome": "Isabelly Fabiana Araújo",
+            "cpf": "229.771.109-33",
+            "dataNascimento": "1950-04-02",
+            "sexo": "feminino",
+            "email": "isabellyfabianaaraujo@gerdal.com.br",
+            "senha": "NGTheANhWy",
+            "endereco": {
+                "cep": "69317-498",
+                "logradouro": "Rua Cruzeiro do Sul",
+                "numero": "464",
+                "bairro": "Cidade Satélite",
+                "cidade": "Boa Vista",
+                "estado": "RR"
+            }
+        },
+        {
+            "id": 4,
+            "nome": "Alice Flávia Kamilly Vieira",
+            "cpf": "221.440.114-86",
+            "dataNascimento": "2001-01-20",
+            "sexo": "feminino",
+            "email": "alice_vieira@gap.com.br",
+            "senha": "ukk4E6G7Eo",
+            "endereco": {
+                "cep": "59067-460",
+                "logradouro": "Rua das Gaivotas",
+                "numero": "420",
+                "bairro": "Pitimbu",
+                "cidade": "Natal",
+                "estado": "RN"
+            }
+        },
+        {
+            "id": 5,
+            "nome": "Arthur Benício Felipe Araújo",
+            "cpf": "610.239.252-30",
+            "dataNascimento": "1972-03-26",
+            "sexo": "masculino",
+            "email": "arthurbenicioaraujo@teadit.com.br",
+            "senha": "Jmjiuqnjxy",
+            "endereco": {
+                "cep": "42801-000",
+                "logradouro": "Rua Interlagos",
+                "numero": "537",
+                "bairro": "Inocoop",
+                "cidade": "Camaçari",
+                "estado": "BA"
+            }
+        },
+        {
+            "id": 6,
+            "nome": "Regina Rebeca Pires",
+            "cpf": "716.920.442-81",
+            "dataNascimento": "1965-04-09",
+            "sexo": "feminino",
+            "email": "regina_pires@boll.com.br",
+            "senha": "DhiMDYtLbh",
+            "endereco": {
+                "cep": "76806-540",
+                "logradouro": "Rua da Paz",
+                "numero": "188",
+                "bairro": "Floresta",
+                "cidade": "Porto Velho",
+                "estado": "RO"
+            }
+        }
+    ],
+    "locaisColeta": [
+        {
+            "id": 1,
+            "nome": "Supermercado Irmãos Gonçalves",
+            "descricao": "O Supermercado Irmãos Gonçalves é um estabelecimento de médio porte, localizado em uma área residencial movimentada, com uma ampla variedade de produtos. Possui um layout eficiente e um amplo estacionamento. Poderia servir como um ponto de coleta ideal devido à sua localização e alto volume de clientes.",
+            "idUsuario": 6,
+            "localizacao": {
+                "cep": "76804-142",
+                "logradouro": "Av. Sete de Setembro",
+                "numero": "2698",
+                "bairro": "Nossa Senhora das Graças",
+                "cidade": "Porto Velho",
+                "estado": "RO"
+            }
+        }
+    ]
+}

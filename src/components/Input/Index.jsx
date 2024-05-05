@@ -8,6 +8,7 @@ function Input({ id, label, type, helperText, error, register, ...props }) {
       type={type}
       helperText={helperText}
       error={error}
+      fullWidth
       {...register}
       {...props}
     />
