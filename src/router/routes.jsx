@@ -2,6 +2,10 @@ import { createBrowserRouter } from "react-router-dom";
 import PaginaLogin from "../pages/PaginaLogin";
 import App from "../App";
 import PrivateRoute from "./PrivateRoute";
+import PaginaCadastroUsuario from "../pages/PaginaCadastroUsuario";
+import PaginaHome from "../pages/PaginaHome";
+import PaginaListaColeta from "../pages/PaginaListaColeta";
+import PaginaCadastroColeta from "../pages/PaginaCadastroColeta";
 
 const routes = createBrowserRouter([
   {
@@ -10,7 +14,7 @@ const routes = createBrowserRouter([
   },
   {
     path: "/usuario/cadastro",
-    element: <h1>Cadastro de Usuário</h1>
+    element: <PaginaCadastroUsuario />
   },
   {
     path: "/",
@@ -22,7 +26,15 @@ const routes = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <h1>Dashboard</h1>
+        element: <PaginaHome />
+      },
+      {
+        path: "/coleta/lista",
+        element: <PaginaListaColeta />
+      },
+      {
+        path: "/coleta/cadastro",
+        element: <PaginaCadastroColeta />
       }
     ]
   }

@@ -1,8 +1,26 @@
-import { Container } from "@mui/material";
+import { Card, Container, Typography } from "@mui/material";
+import FormLogin from "../../components/FormLogin";
 function PaginaLogin() {
   return (
-    <Container>
-      <h1>Login Page</h1>
+    <Container
+      maxWidth="sm"
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        height: "100%"
+      }}>
+      <Card sx={{ padding: 2 }} elevation={10}>
+        <Typography
+          variant="h3"
+          component="h1"
+          align="center"
+          color="primary"
+          gutterBottom>
+          Login
+        </Typography>
+        <FormLogin />
+      </Card>
     </Container>
   );
 }
