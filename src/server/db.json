@@ -137,6 +137,23 @@
       "latitude": -8.7616376,
       "longitude": -63.8862763,
       "tipoResiduo": "eletrônicos, pilhas e baterias"
+    },
+    {
+      "id": 2,
+      "nome": "Komprão Koch Atacadista",
+      "descricao": "O Komprão Koch Atacadista é um estabelecimento de grande porte, situado em uma região comercial vibrante, com uma vasta gama de produtos. Possui um design interno bem planejado e um estacionamento espaçoso. Devido à sua localização estratégica e grande fluxo de clientes, poderia funcionar como um excelente ponto de coleta.",
+      "usuarioId": 7,
+      "localizacao": {
+        "cep": "88113-365",
+        "logradouro": "Rua João José Martins",
+        "numero": "2360",
+        "bairro": "Real Parque",
+        "cidade": "São José",
+        "estado": "SC"
+      },
+      "latitude": -27.562825220321464,
+      "longitude": -48.638393893378705,
+      "tipoResiduo": "pilhas"
     }
   ]
 }
