@@ -6,6 +6,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import RecyclingIcon from "@mui/icons-material/Recycling";
 import AddLocationIcon from "@mui/icons-material/AddLocation";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import { PontosColetaContextProvider } from "./contexts/PontosColeta/PontosColetaContext";
 
 function App() {
   const navArrayLinks = [
@@ -30,12 +31,12 @@ function App() {
     }
   ];
   return (
-    <>
+    <PontosColetaContextProvider>
       <Navbar navArrayLinks={navArrayLinks} />
       <Container sx={{ mt: 5 }}>
         <Outlet />
       </Container>
-    </>
+    </PontosColetaContextProvider>
   );
 }
 
