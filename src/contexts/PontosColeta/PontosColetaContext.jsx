@@ -27,7 +27,7 @@ export const PontosColetaContextProvider = ({ children }) => {
   }
 
   function getPontoColetaPorId(id) {
-    fetch("http://localhost:3000/locaisColeta" + id)
+    fetch("http://localhost:3000/locaisColeta/" + id)
       .then((response) => response.json())
       .then((dados) => setPontosColeta(dados))
       .catch((error) => {

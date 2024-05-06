@@ -14,8 +14,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 function Navbar({ navArrayLinks }) {
   const [open, setOpen] = useState(false);
-  const nomeUsuarioLogado = JSON.parse(localStorage.getItem("user").toString());
-  const primeiroNome = nomeUsuarioLogado.split(" ")[0];
+  const usuarioLogado = JSON.parse(localStorage.getItem("user").toString());
+  const primeiroNome = usuarioLogado.nome.split(" ")[0];
 
   const navigate = useNavigate();
 
