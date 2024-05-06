@@ -35,6 +35,10 @@ const routes = createBrowserRouter([
       {
         path: "/coleta/cadastro",
         element: <PaginaCadastroColeta />
+      },
+      {
+        path: "/coleta/cadastro/:id",
+        element: <PaginaCadastroColeta />
       }
     ]
   }

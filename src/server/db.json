@@ -125,7 +125,7 @@
       "id": 1,
       "nome": "Supermercado Irmãos Gonçalves",
       "descricao": "O Supermercado Irmãos Gonçalves é um estabelecimento de médio porte, localizado em uma área residencial movimentada, com uma ampla variedade de produtos. Possui um layout eficiente e um amplo estacionamento. Poderia servir como um ponto de coleta ideal devido à sua localização e alto volume de clientes.",
-      "usuarioId": 6,
+      "usuarioId": 7,
       "localizacao": {
         "cep": "76804-142",
         "logradouro": "Av. Sete de Setembro",
@@ -136,7 +136,7 @@
       },
       "latitude": -8.7616376,
       "longitude": -63.8862763,
-      "tipoResiduo": "eletrônicos, pilhas e baterias"
+      "tipoResiduo": "eletrônicos, e baterias"
     },
     {
       "id": 2,

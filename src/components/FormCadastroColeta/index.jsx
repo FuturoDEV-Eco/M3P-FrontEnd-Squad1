@@ -1,13 +1,14 @@
-import { Box, Button, Grid, MenuItem, Typography } from "@mui/material";
+import { Box, Button, Grid, MenuItem } from "@mui/material";
 import Input from "../Input/Index";
 import { ViaCepService } from "../../services/ViaCepService";
 import { useForm } from "react-hook-form";
 import { formatarCep } from "../../utils/formatar/Formatadores";
 import { PontosColetaContext } from "../../contexts/PontosColeta/PontosColetaContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function FormCadastroColeta() {
+function FormCadastroColeta({ pontoColeta }) {
+  const [isEditMode, setIsEditMode] = useState(false);
   const {
     register,
     handleSubmit,
@@ -33,10 +34,33 @@ function FormCadastroColeta() {
     }
   });
 
+  const navigate = useNavigate();
+
   const usuarioLogado = JSON.parse(localStorage.getItem("user"));
 
-  const { cadastrarPontoColeta } = useContext(PontosColetaContext);
-  const navigate = useNavigate();
+  const { cadastrarPontoColeta, editarPontoColeta } =
+    useContext(PontosColetaContext);
+
+  useEffect(() => {
+    if (pontoColeta) {
+      console.log(pontoColeta);
+      setIsEditMode(true);
+      setValue("nome", pontoColeta.nome);
+      setValue("descricao", pontoColeta.descricao);
+      setValue("localizacao.cep", pontoColeta.localizacao?.cep);
+      setValue("localizacao.logradouro", pontoColeta.localizacao?.logradouro);
+      setValue("localizacao.numero", pontoColeta.localizacao?.numero);
+      setValue("localizacao.bairro", pontoColeta.localizacao?.bairro);
+      setValue("localizacao.cidade", pontoColeta.localizacao?.cidade);
+      setValue("localizacao.estado", pontoColeta.localizacao?.estado);
+      setValue("latitude", pontoColeta.latitude);
+      setValue("longitude", pontoColeta.longitude);
+      setValue("tipoResiduo", pontoColeta.tipoResiduo);
+    } else {
+      setIsEditMode(false);
+    }
+  }, [pontoColeta]);
+
   const buscarEnderecoPorCep = async () => {
     let cep = getValues("localizacao.cep");
     try {
@@ -70,7 +94,7 @@ function FormCadastroColeta() {
       estado: getValues("localizacao.estado")
     };
 
-    const pontoColeta = {
+    const novoPontoColeta = {
       id: 0,
       nome: data.nome,
       descricao: data.descricao,
@@ -80,8 +104,15 @@ function FormCadastroColeta() {
       longitude: Number(data.longitude),
       tipoResiduo: data.tipoResiduo
     };
-    cadastrarPontoColeta(pontoColeta);
-    navigate("/");
+
+    if (isEditMode) {
+      editarPontoColeta(novoPontoColeta, pontoColeta.id);
+      setIsEditMode(false);
+      navigate("/");
+    } else {
+      cadastrarPontoColeta(novoPontoColeta);
+      navigate("/");
+    }
   };
 
   return (
@@ -91,65 +122,109 @@ function FormCadastroColeta() {
       onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
-          <Input
-            id="nome"
-            label="Nome"
-            type="text"
-            register={register("nome", { required: "O nome é obrigatório" })}
-            error={!!errors.nome}
-            helperText={errors.nome?.message}
-          />
+          {!isEditMode ? (
+            <Input
+              id="nome"
+              label="Nome"
+              type="text"
+              register={register("nome", { required: "O nome é obrigatório" })}
+              error={!!errors.nome}
+              helperText={errors.nome?.message}
+            />
+          ) : (
+            <Input
+              id="nome"
+              label="Nome"
+              type="text"
+              register={register("nome", { required: "O nome é obrigatório" })}
+              error={!!errors.nome}
+              helperText={errors.nome?.message}
+              InputLabelProps={{ shrink: true }}
+            />
+          )}
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Input
-            select
-            id="tipoResiduo"
-            label="Tipo Resíduo"
-            defaultValue=""
-            register={register("tipoResiduo", {
-              required: "O campo tipoResiduo é obrigatório"
-            })}
-            error={!!errors.tipoResiduo}
-            helperText={errors.tipoResiduo?.message}>
-            <MenuItem value="" disabled>
-              Selecione
-            </MenuItem>
-            <MenuItem value="vidro">Vidro</MenuItem>
-            <MenuItem value="metal">Metal</MenuItem>
-            <MenuItem value="papel">Papel</MenuItem>
-            <MenuItem value="plastico">Plástico</MenuItem>
-            <MenuItem value="organico">Orgânico</MenuItem>
-            <MenuItem value="eletronicos">Eletrônicos</MenuItem>
-            <MenuItem value="pilhas">Pilhas</MenuItem>
-            <MenuItem value="baterias">Baterias</MenuItem>
-          </Input>
+          {!isEditMode ? (
+            <Input
+              id="tipoResiduo"
+              label="Tipo Resíduo"
+              type="text"
+              register={register("tipoResiduo", {
+                required: "O campo tipoResiduo é obrigatório"
+              })}
+              error={!!errors.tipoResiduo}
+              helperText={errors.tipoResiduo?.message}
+            />
+          ) : (
+            <Input
+              id="tipoResiduo"
+              label="Tipo Resíduo"
+              type="text"
+              register={register("tipoResiduo", {
+                required: "O campo tipoResiduo é obrigatório"
+              })}
+              error={!!errors.tipoResiduo}
+              helperText={errors.tipoResiduo?.message}
+              InputLabelProps={{ shrink: true }}
+            />
+          )}
         </Grid>
         <Grid item xs={12} sm={12}>
-          <Input
-            id="descricao"
-            label="Descrição"
-            multiline
-            type="text"
-            register={register("descricao", {
-              required: "A descrição é obrigatória"
-            })}
-            error={!!errors.descricao}
-            helperText={errors.descricao?.message}
-          />
+          {!isEditMode ? (
+            <Input
+              id="descricao"
+              label="Descrição"
+              multiline
+              type="text"
+              register={register("descricao", {
+                required: "A descrição é obrigatória"
+              })}
+              error={!!errors.descricao}
+              helperText={errors.descricao?.message}
+            />
+          ) : (
+            <Input
+              id="descricao"
+              label="Descrição"
+              multiline
+              type="text"
+              register={register("descricao", {
+                required: "A descrição é obrigatória"
+              })}
+              error={!!errors.descricao}
+              helperText={errors.descricao?.message}
+              InputLabelProps={{ shrink: true }}
+            />
+          )}
         </Grid>
 
         <Grid item xs={12} sm={3}>
-          <Input
-            id="cep"
-            label="Cep"
-            type="text"
-            register={register("localizacao.cep", {
-              required: "O cep é obrigatório",
-              onBlur: () => handleCepBlur()
-            })}
-            error={!!errors.localizacao?.cep}
-            helperText={errors.localizacao?.cep?.message}
-          />
+          {!isEditMode ? (
+            <Input
+              id="cep"
+              label="Cep"
+              type="text"
+              register={register("localizacao.cep", {
+                required: "O cep é obrigatório",
+                onBlur: () => handleCepBlur()
+              })}
+              error={!!errors.localizacao?.cep}
+              helperText={errors.localizacao?.cep?.message}
+            />
+          ) : (
+            <Input
+              id="cep"
+              label="Cep"
+              type="text"
+              register={register("localizacao.cep", {
+                required: "O cep é obrigatório",
+                onBlur: () => handleCepBlur()
+              })}
+              error={!!errors.localizacao?.cep}
+              helperText={errors.localizacao?.cep?.message}
+              InputLabelProps={{ shrink: true }}
+            />
+          )}
         </Grid>
         <Grid item xs={12} sm={6}>
           <Input
@@ -165,16 +240,30 @@ function FormCadastroColeta() {
           />
         </Grid>
         <Grid item xs={12} sm={3}>
-          <Input
-            id="numero"
-            label="Número"
-            type="text"
-            register={register("localizacao.numero", {
-              required: "O número é obrigatório"
-            })}
-            error={!!errors.localizacao?.numero}
-            helperText={errors.localizacao?.numero?.message}
-          />
+          {!isEditMode ? (
+            <Input
+              id="numero"
+              label="Número"
+              type="text"
+              register={register("localizacao.numero", {
+                required: "O número é obrigatório"
+              })}
+              error={!!errors.localizacao?.numero}
+              helperText={errors.localizacao?.numero?.message}
+            />
+          ) : (
+            <Input
+              id="numero"
+              label="Número"
+              type="text"
+              register={register("localizacao.numero", {
+                required: "O número é obrigatório"
+              })}
+              error={!!errors.localizacao?.numero}
+              helperText={errors.localizacao?.numero?.message}
+              InputLabelProps={{ shrink: true }}
+            />
+          )}
         </Grid>
         <Grid item xs={12} sm={6}>
           <Input
@@ -216,28 +305,56 @@ function FormCadastroColeta() {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Input
-            id="latitude"
-            label="Latitude"
-            type="text"
-            register={register("latitude", {
-              required: "A latitude é obrigatória"
-            })}
-            error={!!errors.latitude}
-            helperText={errors.latitude?.message}
-          />
+          {!isEditMode ? (
+            <Input
+              id="latitude"
+              label="Latitude"
+              type="text"
+              register={register("latitude", {
+                required: "A latitude é obrigatória"
+              })}
+              error={!!errors.latitude}
+              helperText={errors.latitude?.message}
+            />
+          ) : (
+            <Input
+              id="latitude"
+              label="Latitude"
+              type="text"
+              register={register("latitude", {
+                required: "A latitude é obrigatória"
+              })}
+              error={!!errors.latitude}
+              helperText={errors.latitude?.message}
+              InputLabelProps={{ shrink: true }}
+            />
+          )}
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Input
-            id="longitude"
-            label="Longitude"
-            type="text"
-            register={register("longitude", {
-              required: "A longitude é obrigatória"
-            })}
-            error={!!errors.longitude}
-            helperText={errors.longitude?.message}
-          />
+          {!isEditMode ? (
+            <Input
+              id="longitude"
+              label="Longitude"
+              type="text"
+              register={register("longitude", {
+                required: "A longitude é obrigatória"
+              })}
+              error={!!errors.longitude}
+              helperText={errors.longitude?.message}
+            />
+          ) : (
+            <Input
+              id="longitude"
+              label="Longitude"
+              type="text"
+              register={register("longitude", {
+                required: "A longitude é obrigatória"
+              })}
+              error={!!errors.longitude}
+              helperText={errors.longitude?.message}
+              InputLabelProps={{ shrink: true }}
+            />
+          )}
         </Grid>
         <Grid item xs={12} sm={4} sx={{ mb: 2, mx: "auto" }}>
           <Button variant="contained" type="submit" fullWidth>
