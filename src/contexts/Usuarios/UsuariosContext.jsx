@@ -136,8 +136,12 @@ export const UsuariosContextProvider = ({ children }) => {
         if (usuario.email === email) {
           usuarioExiste = true;
           if (usuario.senha === senha) {
+            const usuarioLogado = {
+              id: usuario.id,
+              nome: usuario.nome
+            };
             localStorage.setItem("isAutenticado", true);
-            localStorage.setItem("user", JSON.stringify(usuario.nome));
+            localStorage.setItem("user", JSON.stringify(usuarioLogado));
             toast.success("Usuário logado com sucesso", {
               position: "top-right",
               autoClose: 5000,
