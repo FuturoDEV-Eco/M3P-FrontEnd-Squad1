@@ -10,12 +10,19 @@ import {
 import NavListDrawer from "./NavListDrawer";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function Navbar({ navArrayLinks }) {
   const [open, setOpen] = useState(false);
   const nomeUsuarioLogado = JSON.parse(localStorage.getItem("user").toString());
   const primeiroNome = nomeUsuarioLogado.split(" ")[0];
+
+  const navigate = useNavigate();
+
+  function handleLogOut() {
+    localStorage.clear();
+    navigate("/login");
+  }
   return (
     <>
       <AppBar position="static">
@@ -33,15 +40,24 @@ function Navbar({ navArrayLinks }) {
           </Typography>
 
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {navArrayLinks.map((item) => (
-              <Button
-                color="inherit"
-                key={item.title}
-                component={NavLink}
-                to={item.path}>
-                {item.title}
-              </Button>
-            ))}
+            {navArrayLinks.map((item) =>
+              item.title !== "Sair" ? (
+                <Button
+                  color="inherit"
+                  key={item.title}
+                  component={NavLink}
+                  to={item.path}>
+                  {item.title}
+                </Button>
+              ) : (
+                <Button
+                  color="inherit"
+                  key={item.title}
+                  onClick={() => handleLogOut()}>
+                  {item.title}
+                </Button>
+              )
+            )}
           </Box>
         </Toolbar>
       </AppBar>
