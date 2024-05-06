@@ -11,10 +11,22 @@ import { PontosColetaContext } from "../../contexts/PontosColeta/PontosColetaCon
 import { UsuariosContext } from "../../contexts/Usuarios/UsuariosContext";
 import GroupIcon from "@mui/icons-material/Group";
 import RecyclingIcon from "@mui/icons-material/Recycling";
+import { useNavigate } from "react-router-dom";
 
 function PaginaHome() {
   const { usuarios } = useContext(UsuariosContext);
-  const { pontosColeta } = useContext(PontosColetaContext);
+  const { pontosColeta, deletarLocalColeta, getPontosColeta } =
+    useContext(PontosColetaContext);
+  const navigate = useNavigate();
+
+  function handleEdit(id) {
+    navigate(`/coleta/cadastro/${id}`);
+  }
+
+  async function handleDelete(id) {
+    await deletarLocalColeta(id);
+    await getPontosColeta();
+  }
   return (
     <>
       <Typography variant="h4">Dashboard</Typography>
@@ -79,6 +91,8 @@ function PaginaHome() {
               pontoColeta={pontoColeta}
               zoom={13}
               scrollWheelZoom={false}
+              onclickEditar={() => handleEdit(pontoColeta.id)}
+              onclickDeletar={() => handleDelete(pontoColeta.id)}
             />
           );
         })}

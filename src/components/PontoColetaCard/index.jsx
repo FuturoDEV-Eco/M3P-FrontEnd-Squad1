@@ -15,8 +15,8 @@ function PontoColetaCard({
   pontoColeta,
   zoom,
   scrollWheelZoom,
-  handleEdit,
-  handleDelete
+  onclickEditar,
+  onclickDeletar
 }) {
   function MapPlaceholder() {
     return (
@@ -76,13 +76,13 @@ function PontoColetaCard({
         <Button
           variant="contained"
           startIcon={<EditLocationOutlinedIcon />}
-          onClick={handleEdit}>
+          onClick={() => onclickEditar()}>
           Editar
         </Button>
         <Button
           color="error"
           endIcon={<DeleteForeverOutlinedIcon />}
-          onClick={handleDelete}>
+          onClick={() => onclickDeletar()}>
           Deletar
         </Button>
       </CardActions>
