@@ -5,7 +5,7 @@ de coleta de materiais recicláveis. Os usuários podem cadastrar novos pontos d
 encontrar pontos próximos em um mapa interativo (ou lista), visualizar informações sobre os
 materiais aceitos em cada ponto e registrar suas próprias contribuições para a reciclagem.
 
-![PrintDashboard](https://prnt.sc/DWjkm9sGLo7u)
+![PrintDashboard](https://i.imgur.com/Dz90zYW.png)
 
 ## Stack utilizada
 
