@@ -33,6 +33,7 @@ function FormCadastroUsuario() {
         cep: "",
         logradouro: "",
         numero: "",
+        complemento: "",
         bairro: "",
         cidade: "",
         estado: ""
@@ -70,6 +71,7 @@ function FormCadastroUsuario() {
       cep: formatarCep(getValues("endereco.cep")),
       logradouro: getValues("endereco.logradouro"),
       numero: getValues("endereco.numero"),
+      complemento: getValues("endereco.complemento"),
       bairro: getValues("endereco.bairro"),
       cidade: getValues("endereco.cidade"),
       estado: getValues("endereco.estado")
@@ -91,32 +93,36 @@ function FormCadastroUsuario() {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
-    <Box
-      component="form"
-      sx={{ display: "grid", gap: 1 }}
-      onSubmit={handleSubmit(onSubmit)}>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <Input
-            id="nome"
-            label="Nome"
-            type="text"
-            register={register("nome", { required: "O nome é obrigatório" })}
-            error={!!errors.nome}
-            helperText={errors.nome?.message}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Input
-            id="cpf"
-            label="CPF"
-            type="text"
-            register={register("cpf", { required: "O cpf é obrigatório" })}
-            error={!!errors.cpf}
-            helperText={errors.cpf?.message}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
+      <Box
+        component="form"
+        sx={{ display: "grid", gap: 2 }}
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <Grid container spacing={2}>
+          {/* Campo Nome (1 linha inteira) */}
+          <Grid item xs={12}>
+            <Input
+              id="nome"
+              label="Nome"
+              type="text"
+              inputProps={register("nome", { required: "O nome é obrigatório" })}
+              error={!!errors.nome}
+              helperText={errors.nome?.message}
+            />
+          </Grid>
+
+          {/* CPF, Data de Nascimento e Sexo (1/3 cada) */}
+          <Grid item xs={12} sm={4}>
+            <Input
+              id="cpf"
+              label="CPF"
+              type="text"
+              inputProps={register("cpf", { required: "O CPF é obrigatório" })}
+              error={!!errors.cpf}
+              helperText={errors.cpf?.message}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
             <DatePicker
               label="Data de Nascimento"
               value={getValues("dataNascimento")}
@@ -124,154 +130,171 @@ function FormCadastroUsuario() {
               renderInput={(params) => (
                 <Input
                   {...params}
-                  register={register("dataNascimento", {
-                    required: "A data de nascimento é obrigatória"
-                  })}
                   error={!!errors.dataNascimento}
                   helperText={errors.dataNascimento?.message}
-                  InputLabelProps={{ shrink: true }}
                 />
               )}
             />
           </Grid>
-        <Grid item xs={12} sm={6}>
-          <Input
-            select
-            id="sexo"
-            label="Sexo"
-            defaultValue=""
-            register={register("sexo", {
-              required: "O campo sexo é obrigatório"
-            })}
-            error={!!errors.sexo}
-            helperText={errors.sexo?.message}>
-            <MenuItem value="" disabled>
-              Selecione
-            </MenuItem>
-            <MenuItem value="feminino">Feminino</MenuItem>
-            <MenuItem value="masculino">Masculino</MenuItem>
-          </Input>
+          <Grid item xs={12} sm={4}>
+            <Input
+              select
+              id="sexo"
+              label="Sexo"
+              defaultValue=""
+              inputProps={register("sexo", {
+                required: "O campo sexo é obrigatório"
+              })}
+              error={!!errors.sexo}
+              helperText={errors.sexo?.message}
+            >
+              <MenuItem value="" disabled>
+                Selecione
+              </MenuItem>
+              <MenuItem value="feminino">Feminino</MenuItem>
+              <MenuItem value="masculino">Masculino</MenuItem>
+            </Input>
+          </Grid>
+
+          {/* Email e Senha (1/2 cada) */}
+          <Grid item xs={12} sm={6}>
+            <Input
+              id="email"
+              label="E-Mail"
+              type="email"
+              inputProps={register("email", {
+                required: "O e-mail é obrigatório",
+                validate: {
+                  matchPath: (v) =>
+                    /^\w+([.-]?\w+)@\w+([.-]?\w+)(\.\w{2,3})+$/.test(v)
+                }
+              })}
+              error={!!errors.email}
+              helperText={errors.email?.message}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Input
+              id="senha"
+              label="Senha"
+              type="password"
+              inputProps={register("senha", {
+                required: "A senha é obrigatória",
+                minLength: {
+                  value: 6,
+                  message: "A senha deve ter no mínimo 6 caracteres"
+                }
+              })}
+              error={!!errors.senha}
+              helperText={errors.senha?.message}
+            />
+          </Grid>
+
+          {/* CEP (1/3) e Logradouro (2/3) */}
+          <Grid item xs={12} sm={4}>
+            <Input
+              id="cep"
+              label="CEP"
+              type="text"
+              inputProps={register("endereco.cep", {
+                required: "O CEP é obrigatório",
+                onBlur: handleCepBlur
+              })}
+              error={!!errors.endereco?.cep}
+              helperText={errors.endereco?.cep?.message}
+              InputLabelProps={{ shrink: true }} // Adicionando shrink
+            />
+          </Grid>
+          <Grid item xs={12} sm={8}>
+            <Input
+              id="logradouro"
+              label="Logradouro"
+              type="text"
+              inputProps={register("endereco.logradouro", {
+                required: "O logradouro é obrigatório"
+              })}
+              error={!!errors.endereco?.logradouro}
+              helperText={errors.endereco?.logradouro?.message}
+              InputLabelProps={{ shrink: true }} // Adicionando shrink
+            />
+          </Grid>
+
+          {/* Número, Complemento e Bairro (1/3 cada) */}
+          <Grid item xs={12} sm={4}>
+            <Input
+              id="numero"
+              label="Número"
+              type="text"
+              inputProps={register("endereco.numero", {
+                required: "O número é obrigatório"
+              })}
+              error={!!errors.endereco?.numero}
+              helperText={errors.endereco?.numero?.message}
+              InputLabelProps={{ shrink: true }} // Adicionando shrink
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Input
+              id="complemento"
+              label="Complemento"
+              type="text"
+              inputProps={register("endereco.complemento")}
+              InputLabelProps={{ shrink: true }} // Adicionando shrink
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Input
+              id="bairro"
+              label="Bairro"
+              type="text"
+              inputProps={register("endereco.bairro", {
+                required: "O bairro é obrigatório"
+              })}
+              error={!!errors.endereco?.bairro}
+              helperText={errors.endereco?.bairro?.message}
+              InputLabelProps={{ shrink: true }} // Adicionando shrink
+            />
+          </Grid>
+
+          {/* Cidade e Estado (1/2 cada) */}
+          <Grid item xs={12} sm={6}>
+            <Input
+              id="cidade"
+              label="Cidade"
+              type="text"
+              inputProps={register("endereco.cidade", {
+                required: "A cidade é obrigatória"
+              })}
+              error={!!errors.endereco?.cidade}
+              helperText={errors.endereco?.cidade?.message}
+              InputLabelProps={{ shrink: true }} // Adicionando shrink
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Input
+              id="estado"
+              label="Estado"
+              type="text"
+              inputProps={register("endereco.estado", {
+                required: "O estado é obrigatório"
+              })}
+              error={!!errors.endereco?.estado}
+              helperText={errors.endereco?.estado?.message}
+              InputLabelProps={{ shrink: true }} // Adicionando shrink
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <Input
-            id="email"
-            label="E-Mail"
-            type="email"
-            register={register("email", {
-              required: "O e-mail é obrigatório",
-              validate: {
-                matchPath: (v) =>
-                  /^\w+([.-]?\w+)@\w+([.-]?\w+)(\.\w{2,3})+$/.test(v)
-              }
-            })}
-            error={!!errors.email}
-            helperText={errors.email?.message}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Input
-            id="senha"
-            label="Senha"
-            type="password"
-            register={register("senha", {
-              required: "A senha é obrigatória",
-              minLength: {
-                value: 6,
-                message: "A senha deve ter no mínimo 6 caracteres"
-              }
-            })}
-            error={!!errors.senha}
-            helperText={errors.senha?.message}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <Input
-            id="cep"
-            label="CEP"
-            type="text"
-            register={register("endereco.cep", {
-              required: "O CEP é obrigatório",
-              onBlur: () => handleCepBlur()
-            })}
-            error={!!errors.endereco?.cep}
-            helperText={errors.endereco?.cep?.message}
-          />
-        </Grid>
-        <Grid item xs={12} sm={8}>
-          <Input
-            id="logradouro"
-            label="Logradouro"
-            type="text"
-            register={register("endereco.logradouro", {
-              required: "O logradouro é obrigatório"
-            })}
-            error={!!errors.endereco?.logradouro}
-            helperText={errors.endereco?.logradouro?.message}
-            InputLabelProps={{ shrink: true }}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <Input
-            id="numero"
-            label="Número"
-            type="text"
-            register={register("endereco.numero", {
-              required: "O número é obrigatório"
-            })}
-            error={!!errors.endereco?.numero}
-            helperText={errors.endereco?.numero?.message}
-          />
-        </Grid>
-        <Grid item xs={12} sm={8}>
-          <Input
-            id="bairro"
-            label="Bairro"
-            type="text"
-            register={register("endereco.bairro", {
-              required: "O bairro é obrigatório"
-            })}
-            error={!!errors.endereco?.bairro}
-            helperText={errors.endereco?.bairro?.message}
-            InputLabelProps={{ shrink: true }}
-          />
-        </Grid>
-        <Grid item xs={12} sm={8}>
-          <Input
-            id="cidade"
-            label="Cidade"
-            type="text"
-            register={register("endereco.cidade", {
-              required: "A cidade é obrigatória"
-            })}
-            error={!!errors.endereco?.cidade}
-            helperText={errors.endereco?.cidade?.message}
-            InputLabelProps={{ shrink: true }}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <Input
-            id="estado"
-            label="Estado"
-            type="text"
-            register={register("endereco.estado", {
-              required: "O estado é obrigatório"
-            })}
-            error={!!errors.endereco?.estado}
-            helperText={errors.endereco?.estado?.message}
-            InputLabelProps={{ shrink: true }}
-          />
-        </Grid>
-      </Grid>
-      <Button variant="contained" type="submit">
-        Cadastrar
-      </Button>
-      <Typography align="center" variant="subtitle2">
-        Já possui uma conta? &nbsp;
-        <Typography component={Link} to="/login" color="primary">
-          Logar
+
+        <Button variant="contained" type="submit">
+          Cadastrar
+        </Button>
+        <Typography align="center" variant="subtitle2">
+          Já possui uma conta? &nbsp;
+          <Typography component={Link} to="/login" color="primary">
+            Logar
+          </Typography>
         </Typography>
-      </Typography>
-    </Box>
+      </Box>
     </LocalizationProvider>
   );
 }
