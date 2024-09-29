@@ -101,7 +101,7 @@ function FormCadastroUsuario() {
         <Grid item xs={12} sm={6}>
           <Input
             id="cpf"
-            label="Cpf"
+            label="CPF"
             type="text"
             register={register("cpf", { required: "O cpf é obrigatório" })}
             error={!!errors.cpf}
@@ -143,10 +143,10 @@ function FormCadastroUsuario() {
         <Grid item xs={12} sm={6}>
           <Input
             id="email"
-            label="Email"
+            label="E-Mail"
             type="email"
             register={register("email", {
-              required: "O email é obrigatório",
+              required: "O e-mail é obrigatório",
               validate: {
                 matchPath: (v) =>
                   /^\w+([.-]?\w+)@\w+([.-]?\w+)(\.\w{2,3})+$/.test(v)
@@ -178,7 +178,7 @@ function FormCadastroUsuario() {
             label="Cep"
             type="text"
             register={register("endereco.cep", {
-              required: "O cep é obrigatório",
+              required: "O CEP é obrigatório",
               onBlur: () => handleCepBlur()
             })}
             error={!!errors.endereco?.cep}
