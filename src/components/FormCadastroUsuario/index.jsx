@@ -12,6 +12,8 @@ import { FormatarCpf, formatarCep } from "../../utils/formatar/Formatadores";
 import { useContext } from "react";
 import { UsuariosContext } from "../../contexts/Usuarios/UsuariosContext";
 
+
+
 dayjs.extend(customParseFormat);
 
 function FormCadastroUsuario() {
@@ -91,7 +93,9 @@ function FormCadastroUsuario() {
     cadastrarUsuario(usuario);
   };
 
+
   return (
+    <>
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
       <Box
         component="form"
@@ -296,6 +300,7 @@ function FormCadastroUsuario() {
         </Typography>
       </Box>
     </LocalizationProvider>
+    </>
   );
 }
 
