@@ -1,4 +1,9 @@
 import { Box, Button, Grid, MenuItem, Typography } from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import "dayjs/locale/pt-br";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import Input from "../Input/Index";
 import { Link } from "react-router-dom";
 import { ViaCepService } from "../../services/ViaCepService";
@@ -6,6 +11,8 @@ import { useForm } from "react-hook-form";
 import { FormatarCpf, formatarCep } from "../../utils/formatar/Formatadores";
 import { useContext } from "react";
 import { UsuariosContext } from "../../contexts/Usuarios/UsuariosContext";
+
+dayjs.extend(customParseFormat);
 
 function FormCadastroUsuario() {
   const {
@@ -83,6 +90,7 @@ function FormCadastroUsuario() {
   };
 
   return (
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
     <Box
       component="form"
       sx={{ display: "grid", gap: 1 }}
@@ -109,19 +117,23 @@ function FormCadastroUsuario() {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Input
-            id="dataNascimento"
-            type="date"
-            label="Data de Nascimento"
-            sx={{ width: "100%" }}
-            InputLabelProps={{ shrink: true }}
-            register={register("dataNascimento", {
-              required: "A data de nascimento é obrigatória"
-            })}
-            error={!!errors.dataNascimento}
-            helperText={errors.dataNascimento?.message}
-          />
-        </Grid>
+            <DatePicker
+              label="Data de Nascimento"
+              value={getValues("dataNascimento")}
+              onChange={(newValue) => setValue("dataNascimento", newValue)}
+              renderInput={(params) => (
+                <Input
+                  {...params}
+                  register={register("dataNascimento", {
+                    required: "A data de nascimento é obrigatória"
+                  })}
+                  error={!!errors.dataNascimento}
+                  helperText={errors.dataNascimento?.message}
+                  InputLabelProps={{ shrink: true }}
+                />
+              )}
+            />
+          </Grid>
         <Grid item xs={12} sm={6}>
           <Input
             select
@@ -175,7 +187,7 @@ function FormCadastroUsuario() {
         <Grid item xs={12} sm={4}>
           <Input
             id="cep"
-            label="Cep"
+            label="CEP"
             type="text"
             register={register("endereco.cep", {
               required: "O CEP é obrigatório",
@@ -260,6 +272,7 @@ function FormCadastroUsuario() {
         </Typography>
       </Typography>
     </Box>
+    </LocalizationProvider>
   );
 }
 
