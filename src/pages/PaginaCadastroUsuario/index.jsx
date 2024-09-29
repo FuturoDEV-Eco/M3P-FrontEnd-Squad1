@@ -8,6 +8,7 @@ const navArrayLinks = [
   { title: "Cadastro", path: "/cadastro" },
   { title: "Login", path: "/login" }
 ];
+
 function PaginaCadastroUsuario() {
   return (
     <>
