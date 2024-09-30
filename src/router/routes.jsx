@@ -6,16 +6,20 @@ import PaginaCadastroUsuario from "../pages/PaginaCadastroUsuario";
 import PaginaHome from "../pages/PaginaHome";
 import PaginaListaColeta from "../pages/PaginaListaColeta";
 import PaginaCadastroColeta from "../pages/PaginaCadastroColeta";
-import Dashboard from "../pages/Dashboard"; 
+import Dashboard from "../pages/Dashboard";
 
 const routes = createBrowserRouter([
   {
     path: "/login",
-    element: <PaginaLogin />
+    element: <PaginaLogin />,
   },
   {
     path: "/usuario/cadastro",
-    element: <PaginaCadastroUsuario />
+    element: <PaginaCadastroUsuario />,
+  },
+  {
+    path: "/dashboard", // Nova rota para o dashboard
+    element: <Dashboard />,
   },
   {
     path: "/",
@@ -27,26 +31,22 @@ const routes = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <PaginaHome />
+        element: <PaginaHome />,
       },
       {
         path: "/coleta/lista",
-        element: <PaginaListaColeta />
+        element: <PaginaListaColeta />,
       },
       {
         path: "/coleta/cadastro",
-        element: <PaginaCadastroColeta />
+        element: <PaginaCadastroColeta />,
       },
       {
         path: "/coleta/cadastro/:id",
-        element: <PaginaCadastroColeta />
+        element: <PaginaCadastroColeta />,
       },
-      {
-        path: "/dashboard", // Nova rota para o dashboard
-        element: <Dashboard />
-      }
-    ]
-  }
+    ],
+  },
 ]);
 
 export default routes;

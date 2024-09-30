@@ -5,6 +5,15 @@ import ColetaList from "../../components/ColetaList";
 import MapView from "../../components/MapView";
 import PeopleIcon from "@mui/icons-material/People";
 import LocationOnIcon from "@mui/icons-material/LocationOn"; // Ícone de localização
+import NavMenu from "../../components/NavMenu";
+
+// Defina os links de navegação
+const navArrayLinks = [
+  { title: "Dashboard", path: "/dashboard" },
+  { title: "Cadastro", path: "/usuario/cadastro" },
+  { title: "Login", path: "/login" }
+];
+
 
 const Dashboard = () => {
   const [pontosColeta, setPontosColeta] = useState([]);
@@ -36,6 +45,8 @@ const Dashboard = () => {
   };
 
   return (
+    <>
+    <NavMenu navArrayLinks={navArrayLinks} /> 
     <Container>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={3}>
@@ -60,6 +71,7 @@ const Dashboard = () => {
         </Grid>
       </Grid>
     </Container>
+    </>
   );
 };
 
