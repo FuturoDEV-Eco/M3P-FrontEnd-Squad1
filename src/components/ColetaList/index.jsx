@@ -1,21 +1,34 @@
-import { List, ListItem, ListItemText, Card, CardContent } from "@mui/material";
+import { List, ListItem, ListItemText, Button } from "@mui/material";
 
 const ColetaList = ({ pontosColeta }) => {
   return (
-    <Card sx={{ marginTop: 4 }}>
-      <CardContent>
-        <List>
-          {pontosColeta.map((ponto) => (
-            <ListItem key={ponto.id}>
-              <ListItemText
-                primary={ponto.nome}
-                secondary={`Endereço: ${ponto.endereco}`}
-              />
-            </ListItem>
-          ))}
-        </List>
-      </CardContent>
-    </Card>
+    <List>
+      {pontosColeta.map((ponto) => (
+        <ListItem key={ponto.id}>
+          <ListItemText
+            primary={ponto.nome}
+            secondary={
+              <>
+                <b>Endereço:</b> {ponto.localizacao.logradouro}, {ponto.localizacao.numero}, {ponto.localizacao.bairro}, {ponto.localizacao.cidade}, {ponto.localizacao.estado}, CEP: {ponto.localizacao.cep}
+                <br />
+                <b>Tipo de Resíduo:</b> {ponto.tipoResiduo}
+                <br />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  href={`https://www.google.com/maps/search/?api=1&query=${ponto.latitude},${ponto.longitude}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ marginTop: "10px" }}
+                >
+                  Abrir no Maps
+                </Button>
+              </>
+            }
+          />
+        </ListItem>
+      ))}
+    </List>
   );
 };
 

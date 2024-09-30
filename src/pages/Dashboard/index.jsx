@@ -3,18 +3,16 @@ import { Container, Grid } from "@mui/material";
 import CardInfo from "../../components/CardInfo";
 import ColetaList from "../../components/ColetaList";
 import MapView from "../../components/MapView";
-
-import RecyclingIcon from "@mui/icons-material/Recycling";
 import PeopleIcon from "@mui/icons-material/People";
+import LocationOnIcon from "@mui/icons-material/LocationOn"; // Ícone de localização
 
 const Dashboard = () => {
   const [pontosColeta, setPontosColeta] = useState([]);
-  const [usuariosAtivos, setUsuariosAtivos] = useState(0); // Mock para usuários ativos
+  const [usuariosCadastrados, setUsuariosCadastrados] = useState(0); // Quantidade de usuários cadastrados
 
   useEffect(() => {
     fetchPontosColeta();
-    // Mock: Quantidade de usuários ativos
-    setUsuariosAtivos(123); // Você pode substituir isso pela lógica real
+    fetchUsuariosCadastrados(); // Chama a função para buscar usuários cadastrados
   }, []);
 
   const fetchPontosColeta = async () => {
@@ -27,14 +25,32 @@ const Dashboard = () => {
     }
   };
 
+  const fetchUsuariosCadastrados = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/usuarios");
+      const data = await response.json();
+      setUsuariosCadastrados(data.length); // Exibe a quantidade de usuários
+    } catch (error) {
+      console.error("Erro ao carregar os usuários cadastrados:", error);
+    }
+  };
+
   return (
     <Container>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={3}>
-          <CardInfo title="Usuários Ativos" value={usuariosAtivos} icon={<PeopleIcon />} />
+          <CardInfo
+            title="Usuários Cadastrados"
+            value={usuariosCadastrados}
+            icon={<PeopleIcon />}
+          />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <CardInfo title="Pontos de Coleta" value={pontosColeta.length} icon={<RecyclingIcon />} />
+          <CardInfo
+            title="Pontos de Coleta"
+            value={pontosColeta.length}
+            icon={<LocationOnIcon />} // Novo ícone de localização
+          />
         </Grid>
         <Grid item xs={12}>
           <MapView pontosColeta={pontosColeta} />
