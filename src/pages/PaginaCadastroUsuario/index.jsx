@@ -4,8 +4,8 @@ import NavMenu from "../../components/NavMenu";
 
 // Defina os links de navegação
 const navArrayLinks = [
-  { title: "Início", path: "/" },
-  { title: "Cadastro", path: "/cadastro" },
+  { title: "Dashboard", path: "/dashboard" },
+  { title: "Cadastro", path: "/usuario/cadastro" },
   { title: "Login", path: "/login" }
 ];
 
