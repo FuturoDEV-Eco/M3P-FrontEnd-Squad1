@@ -6,6 +6,7 @@ import PaginaCadastroUsuario from "../pages/PaginaCadastroUsuario";
 import PaginaHome from "../pages/PaginaHome";
 import PaginaListaColeta from "../pages/PaginaListaColeta";
 import PaginaCadastroColeta from "../pages/PaginaCadastroColeta";
+import Dashboard from "../pages/Dashboard"; 
 
 const routes = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const routes = createBrowserRouter([
       {
         path: "/coleta/cadastro/:id",
         element: <PaginaCadastroColeta />
+      },
+      {
+        path: "/dashboard", // Nova rota para o dashboard
+        element: <Dashboard />
       }
     ]
   }

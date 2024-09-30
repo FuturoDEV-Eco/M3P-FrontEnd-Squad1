@@ -30,11 +30,12 @@ function App() {
       icon: <ExitToAppIcon />
     }
   ];
+
   return (
     <PontosColetaContextProvider>
       <Navbar navArrayLinks={navArrayLinks} />
       <Container sx={{ mt: 5 }}>
-        <Outlet />
+        <Outlet /> {/* Isso mantém o carregamento das rotas */}
       </Container>
     </PontosColetaContextProvider>
   );
