@@ -205,6 +205,30 @@
       "latitude": -27.5904215,
       "longitude": -48.5979571,
       "tipoResiduo": "Todos"
+    },
+    {
+      "id": 6,
+      "nome": "Um novo ponto",
+      "descricao": "Um novo ponto sendo cadastrado",
+      "usuarioId": 7,
+      "localizacao": {
+        "cep": "89231418",
+        "logradouro": "Rua Vinte e Cinco de Dezembro",
+        "numero": "40",
+        "bairro": "Paranaguamirim",
+        "cidade": "Joinville",
+        "estado": "SC"
+      },
+      "latitude": -26.3478146,
+      "longitude": -48.7942284,
+      "tipoResiduo": [
+        "Vidro",
+        "Metal",
+        "Papel",
+        "Plástico",
+        "Orgânico",
+        "Baterias"
+      ]
     }
   ]
 }

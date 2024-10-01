@@ -59,27 +59,39 @@ function FormCadastroColeta({ pontoColeta }) {
   const { cadastrarPontoColeta, editarPontoColeta } =
     useContext(PontosColetaContext);
 
-  useEffect(() => {
-    if (pontoColeta) {
-      setIsEditMode(true);
-      setValue("nome", pontoColeta.nome);
-      setValue("descricao", pontoColeta.descricao);
-      setValue("localizacao.cep", pontoColeta.localizacao?.cep);
-      setValue("localizacao.logradouro", pontoColeta.localizacao?.logradouro);
-      setValue("localizacao.numero", pontoColeta.localizacao?.numero);
-      setValue("localizacao.bairro", pontoColeta.localizacao?.bairro);
-      setValue("localizacao.cidade", pontoColeta.localizacao?.cidade);
-      setValue("localizacao.estado", pontoColeta.localizacao?.estado);
-      setValue("latitude", pontoColeta.latitude);
-      setValue("longitude", pontoColeta.longitude);
-      const tiposResiduo = pontoColeta.tipoResiduo || [];
-      setValue("tipoResiduo", tiposResiduo);
-      setSelectedResiduos(tiposResiduo);
-    } else {
-      setIsEditMode(false);
-      setSelectedResiduos([]);
-    }
-  }, [pontoColeta, setValue]);
+    useEffect(() => {
+      if (pontoColeta && pontoColeta.id) {
+        setIsEditMode(true);
+        setValue("nome", pontoColeta.nome);
+        setValue("descricao", pontoColeta.descricao);
+        setValue("localizacao.cep", pontoColeta.localizacao?.cep);
+        setValue("localizacao.logradouro", pontoColeta.localizacao?.logradouro);
+        setValue("localizacao.numero", pontoColeta.localizacao?.numero);
+        setValue("localizacao.bairro", pontoColeta.localizacao?.bairro);
+        setValue("localizacao.cidade", pontoColeta.localizacao?.cidade);
+        setValue("localizacao.estado", pontoColeta.localizacao?.estado);
+        setValue("latitude", pontoColeta.latitude);
+        setValue("longitude", pontoColeta.longitude);
+        const tiposResiduo = pontoColeta.tipoResiduo || [];
+        setValue("tipoResiduo", tiposResiduo);
+        setSelectedResiduos(tiposResiduo);
+      } else {
+        setIsEditMode(false);
+        setSelectedResiduos([]);
+        // Limpar os campos do formulário
+        setValue("nome", "");
+        setValue("descricao", "");
+        setValue("localizacao.cep", "");
+        setValue("localizacao.logradouro", "");
+        setValue("localizacao.numero", "");
+        setValue("localizacao.bairro", "");
+        setValue("localizacao.cidade", "");
+        setValue("localizacao.estado", "");
+        setValue("latitude", "");
+        setValue("longitude", "");
+        setValue("tipoResiduo", []);
+      }
+    }, [pontoColeta, setValue]);
 
   const buscarEnderecoPorCep = async () => {
     const cep = getValues("localizacao.cep");
@@ -136,26 +148,24 @@ function FormCadastroColeta({ pontoColeta }) {
       cidade: data.localizacao.cidade,
       estado: data.localizacao.estado,
     };
-
+  
     const novoPontoColeta = {
-      id: 0,
+      id: isEditMode ? pontoColeta.id : 0,
       nome: data.nome,
       descricao: data.descricao,
       usuarioId: usuarioLogado.id,
       localizacao: localizacao,
       latitude: Number(data.latitude),
       longitude: Number(data.longitude),
-      tipoResiduo: data.tipoResiduo, // Agora armazenado como array
+      tipoResiduo: data.tipoResiduo,
     };
-
+  
     if (isEditMode) {
-      editarPontoColeta(novoPontoColeta, pontoColeta.id);
-      setIsEditMode(false);
-      navigate("/");
+      editarPontoColeta(novoPontoColeta);
     } else {
       cadastrarPontoColeta(novoPontoColeta);
-      navigate("/");
     }
+    navigate("/");
   };
 
   return (
