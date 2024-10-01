@@ -1,20 +1,10 @@
-import {
-  Box,
-  Button,
-  Grid,
-  MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Grid, MenuItem, Select, InputLabel, FormControl } from "@mui/material";
 import Input from "../Input/Index";
-import { ViaCepService } from "../../services/ViaCepService";
+import { ViaCepService } from "../../services/ViaCepService"; // Serviço de busca do ViaCEP
 import { useForm } from "react-hook-form";
-import { formatarCep } from "../../utils/formatar/Formatadores";
-import { PontosColetaContext } from "../../contexts/PontosColeta/PontosColetaContext";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { PontosColetaContext } from "../../contexts/PontosColeta/PontosColetaContext";
 
 function FormCadastroColeta({ pontoColeta }) {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -23,7 +13,7 @@ function FormCadastroColeta({ pontoColeta }) {
     handleSubmit,
     setValue,
     getValues,
-    formState: { errors },
+    formState: { errors }
   } = useForm({
     defaultValues: {
       nome: "",
@@ -35,18 +25,17 @@ function FormCadastroColeta({ pontoColeta }) {
         numero: "",
         bairro: "",
         cidade: "",
-        estado: "",
+        estado: ""
       },
       latitude: "",
       longitude: "",
-      tipoResiduo: [],
-    },
+      tipoResiduo: []
+    }
   });
 
   const navigate = useNavigate();
   const usuarioLogado = JSON.parse(localStorage.getItem("user"));
-  const { cadastrarPontoColeta, editarPontoColeta } =
-    useContext(PontosColetaContext);
+  const { cadastrarPontoColeta, editarPontoColeta } = useContext(PontosColetaContext);
 
   useEffect(() => {
     if (pontoColeta) {
@@ -61,35 +50,14 @@ function FormCadastroColeta({ pontoColeta }) {
       setValue("localizacao.estado", pontoColeta.localizacao?.estado);
       setValue("latitude", pontoColeta.latitude);
       setValue("longitude", pontoColeta.longitude);
-      setValue("tipoResiduo", pontoColeta.tipoResiduo);
+      setValue("tipoResiduo", pontoColeta.tipoResiduo || []);
     } else {
       setIsEditMode(false);
     }
   }, [pontoColeta, setValue]);
 
-  const buscarCoordenadasPorEndereco = async (endereco) => {
-    const query = `${endereco.logradouro}, ${endereco.numero}, ${endereco.bairro}, ${endereco.cidade}, ${endereco.estado}`;
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-      query
-    )}`;
-
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-
-      if (data.length > 0) {
-        setValue("latitude", data[0].lat);
-        setValue("longitude", data[0].lon);
-      } else {
-        console.error("Endereço não encontrado no Nominatim.");
-      }
-    } catch (error) {
-      console.error("Erro ao buscar coordenadas: ", error);
-    }
-  };
-
   const buscarEnderecoPorCep = async () => {
-    let cep = getValues("localizacao.cep");
+    const cep = getValues("localizacao.cep");
     try {
       const response = await ViaCepService.Get(cep);
       if (response) {
@@ -98,28 +66,48 @@ function FormCadastroColeta({ pontoColeta }) {
         setValue("localizacao.cidade", response.localidade);
         setValue("localizacao.estado", response.uf);
 
-        await buscarCoordenadasPorEndereco(response);
+        // Adiciona o timer para buscar latitude e longitude no Nominatim 2 segundos após preencher os campos do endereço
+        setTimeout(() => {
+          buscarLatitudeLongitude();
+        }, 2000);
       }
     } catch (error) {
       console.error("Erro ao buscar o CEP: ", error);
     }
   };
 
+  // Função para buscar latitude e longitude no Nominatim
+  const buscarLatitudeLongitude = async () => {
+    const { logradouro, bairro, cidade, estado } = getValues("localizacao");
+    const enderecoCompleto = `${logradouro}, ${bairro}, ${cidade}, ${estado}, Brasil`;
+
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(enderecoCompleto)}`
+      );
+      const data = await response.json();
+      if (data.length > 0) {
+        const { lat, lon } = data[0];
+        setValue("latitude", lat);
+        setValue("longitude", lon);
+      }
+    } catch (error) {
+      console.error("Erro ao buscar coordenadas no Nominatim: ", error);
+    }
+  };
+
   const handleCepBlur = () => {
-    const debounceTimer = setTimeout(async () => {
-      await buscarEnderecoPorCep();
-    }, 500);
-    return () => clearTimeout(debounceTimer);
+    buscarEnderecoPorCep();
   };
 
   const onSubmit = (data) => {
     const localizacao = {
-      cep: formatarCep(getValues("localizacao.cep")),
-      logradouro: getValues("localizacao.logradouro"),
-      numero: getValues("localizacao.numero"),
-      bairro: getValues("localizacao.bairro"),
-      cidade: getValues("localizacao.cidade"),
-      estado: getValues("localizacao.estado"),
+      cep: data.localizacao.cep,
+      logradouro: data.localizacao.logradouro,
+      numero: data.localizacao.numero,
+      bairro: data.localizacao.bairro,
+      cidade: data.localizacao.cidade,
+      estado: data.localizacao.estado
     };
 
     const novoPontoColeta = {
@@ -130,7 +118,7 @@ function FormCadastroColeta({ pontoColeta }) {
       localizacao: localizacao,
       latitude: Number(data.latitude),
       longitude: Number(data.longitude),
-      tipoResiduo: data.tipoResiduo,
+      tipoResiduo: data.tipoResiduo // Agora armazenado como array
     };
 
     if (isEditMode) {
@@ -143,10 +131,6 @@ function FormCadastroColeta({ pontoColeta }) {
     }
   };
 
-  const googleMapsLink = `https://www.google.com/maps/search/?api=1&query=${getValues(
-    "latitude"
-  )},${getValues("longitude")}`;
-
   return (
     <Box
       component="form"
@@ -154,7 +138,6 @@ function FormCadastroColeta({ pontoColeta }) {
       onSubmit={handleSubmit(onSubmit)}
     >
       <Grid container spacing={2}>
-        {/* Nome do Local */}
         <Grid item xs={12} sm={6}>
           <Input
             id="nome"
@@ -163,64 +146,52 @@ function FormCadastroColeta({ pontoColeta }) {
             register={register("nome", { required: "O nome é obrigatório" })}
             error={!!errors.nome}
             helperText={errors.nome?.message}
+            InputLabelProps={{ shrink: true }} // Propriedade shrink para evitar sobreposição da label
           />
         </Grid>
-
-        {/* Tipo de Resíduo */}
         <Grid item xs={12} sm={6}>
           <FormControl fullWidth>
-            <InputLabel id="tipoResiduo-label">Tipos de Resíduos</InputLabel>
+            <InputLabel shrink id="tipoResiduo-label">Tipo Resíduo</InputLabel>
             <Select
               labelId="tipoResiduo-label"
               id="tipoResiduo"
               multiple
-              value={getValues("tipoResiduo") || []} // Garante que o valor seja sempre um array
+              value={getValues("tipoResiduo")}
               onChange={(e) => setValue("tipoResiduo", e.target.value)}
               renderValue={(selected) => selected.join(", ")}
+              error={!!errors.tipoResiduo}
+              helperText={errors.tipoResiduo?.message}
             >
-              {[
-                "Vidro",
-                "Metal",
-                "Papel",
-                "Plástico",
-                "Orgânico",
-                "Baterias",
-              ].map((residuo) => (
-                <MenuItem key={residuo} value={residuo}>
-                  {residuo}
-                </MenuItem>
-              ))}
+              <MenuItem value="Vidro">Vidro</MenuItem>
+              <MenuItem value="Metal">Metal</MenuItem>
+              <MenuItem value="Papel">Papel</MenuItem>
+              <MenuItem value="Plástico">Plástico</MenuItem>
+              <MenuItem value="Orgânico">Orgânico</MenuItem>
+              <MenuItem value="Baterias">Baterias</MenuItem>
             </Select>
           </FormControl>
         </Grid>
-
-        {/* Descrição */}
         <Grid item xs={12}>
           <Input
             id="descricao"
             label="Descrição"
             multiline
             type="text"
-            register={register("descricao", {
-              required: "A descrição é obrigatória",
-            })}
+            register={register("descricao", { required: "A descrição é obrigatória" })}
             error={!!errors.descricao}
             helperText={errors.descricao?.message}
+            InputLabelProps={{ shrink: true }}
           />
         </Grid>
-
-        {/* CEP e Logradouro */}
         <Grid item xs={12} sm={3}>
           <Input
             id="cep"
             label="Cep"
             type="text"
-            register={register("localizacao.cep", {
-              required: "O cep é obrigatório",
-              onBlur: handleCepBlur,
-            })}
+            register={register("localizacao.cep", { required: "O cep é obrigatório", onBlur: handleCepBlur })}
             error={!!errors.localizacao?.cep}
             helperText={errors.localizacao?.cep?.message}
+            InputLabelProps={{ shrink: true }}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -228,11 +199,10 @@ function FormCadastroColeta({ pontoColeta }) {
             id="logradouro"
             label="Logradouro"
             type="text"
-            register={register("localizacao.logradouro", {
-              required: "O logradouro é obrigatório",
-            })}
+            register={register("localizacao.logradouro", { required: "O logradouro é obrigatório" })}
             error={!!errors.localizacao?.logradouro}
             helperText={errors.localizacao?.logradouro?.message}
+            InputLabelProps={{ shrink: true }}
           />
         </Grid>
         <Grid item xs={12} sm={3}>
@@ -240,63 +210,55 @@ function FormCadastroColeta({ pontoColeta }) {
             id="numero"
             label="Número"
             type="text"
-            register={register("localizacao.numero", {
-              required: "O número é obrigatório",
-            })}
+            register={register("localizacao.numero", { required: "O número é obrigatório" })}
             error={!!errors.localizacao?.numero}
             helperText={errors.localizacao?.numero?.message}
+            InputLabelProps={{ shrink: true }}
           />
         </Grid>
-
-        {/* Bairro, Cidade e Estado */}
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={6}>
           <Input
             id="bairro"
             label="Bairro"
             type="text"
-            register={register("localizacao.bairro", {
-              required: "O bairro é obrigatório",
-            })}
+            register={register("localizacao.bairro", { required: "O bairro é obrigatório" })}
             error={!!errors.localizacao?.bairro}
             helperText={errors.localizacao?.bairro?.message}
+            InputLabelProps={{ shrink: true }}
           />
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={3}>
           <Input
             id="cidade"
             label="Cidade"
             type="text"
-            register={register("localizacao.cidade", {
-              required: "A cidade é obrigatória",
-            })}
+            register={register("localizacao.cidade", { required: "A cidade é obrigatória" })}
             error={!!errors.localizacao?.cidade}
             helperText={errors.localizacao?.cidade?.message}
+            InputLabelProps={{ shrink: true }}
           />
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={3}>
           <Input
             id="estado"
             label="Estado"
             type="text"
-            register={register("localizacao.estado", {
-              required: "O estado é obrigatório",
-            })}
+            register={register("localizacao.estado", { required: "O estado é obrigatório" })}
             error={!!errors.localizacao?.estado}
             helperText={errors.localizacao?.estado?.message}
+            InputLabelProps={{ shrink: true }}
           />
         </Grid>
-
-        {/* Latitude e Longitude */}
         <Grid item xs={12} sm={6}>
           <Input
             id="latitude"
             label="Latitude"
             type="text"
-            register={register("latitude", {
-              required: "A latitude é obrigatória",
-            })}
+            register={register("latitude", { required: "A latitude é obrigatória" })}
             error={!!errors.latitude}
             helperText={errors.latitude?.message}
+            InputLabelProps={{ shrink: true }}
+            readOnly
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -304,31 +266,17 @@ function FormCadastroColeta({ pontoColeta }) {
             id="longitude"
             label="Longitude"
             type="text"
-            register={register("longitude", {
-              required: "A longitude é obrigatória",
-            })}
+            register={register("longitude", { required: "A longitude é obrigatória" })}
             error={!!errors.longitude}
             helperText={errors.longitude?.message}
+            InputLabelProps={{ shrink: true }}
+            readOnly
           />
         </Grid>
-
-        {/* Link para o Google Maps */}
-        <Grid item xs={12}>
-          <Typography variant="body1" sx={{ mt: 1 }}>
-            Link para o Google Maps:{" "}
-            <a href={googleMapsLink} target="_blank" rel="noopener noreferrer">
-              {googleMapsLink}
-            </a>
-          </Typography>
-        </Grid>
-
-        {/* Botões de Ação */}
-        <Grid item xs={12}>
-          <Button variant="contained" type="submit">
-            {isEditMode ? "Atualizar" : "Cadastrar"} Ponto de Coleta
-          </Button>
-        </Grid>
       </Grid>
+      <Button type="submit" variant="contained" color="primary">
+        {isEditMode ? "Salvar Alterações" : "Cadastrar"}
+      </Button>
     </Box>
   );
 }
