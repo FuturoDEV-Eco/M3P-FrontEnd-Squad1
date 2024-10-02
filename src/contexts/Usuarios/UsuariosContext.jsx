@@ -20,10 +20,11 @@ export const UsuariosContextProvider = ({ children }) => {
     return !!usuarioLogado;
   }
 
-  // Função para verificar se o usuário é dono do ponto de coleta
-  function isOwner(pontoColeta) {
-    return usuarioLogado && pontoColeta.usuarioId === usuarioLogado.id;
-  }
+  // Verifica se o usuário logado é o dono do ponto de coleta
+function isOwner(pontoColeta) {
+  // Certifica-se de que os objetos `usuarioLogado` e `pontoColeta` existem e têm o campo `id` necessário
+  return usuarioLogado && pontoColeta && pontoColeta.usuarioId === usuarioLogado.id;
+}
 
   function getUsuarios() {
     fetch("http://localhost:3000/usuarios")
