@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 function PaginaCadastroColeta() {
   const { id } = useParams();
   const [pontoColeta, setPontoColeta] = useState({});
+
   useEffect(() => {
     if (id) {
       fetch("http://localhost:3000/locaisColeta/" + id)
@@ -28,7 +29,7 @@ function PaginaCadastroColeta() {
   return (
     <>
       <Typography variant="h4" sx={{ mb: { xs: 1, md: 3 } }}>
-        Cadastro Pontos de Coleta {id}
+        Cadastro Pontos de Coleta {id ? " - Editar" : ""}
       </Typography>
       <FormCadastroColeta pontoColeta={pontoColeta} />
     </>
