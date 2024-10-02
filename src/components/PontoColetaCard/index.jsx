@@ -11,12 +11,14 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
 import EditLocationOutlinedIcon from "@mui/icons-material/EditLocationOutlined";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
+
 function PontoColetaCard({
   pontoColeta,
   zoom,
   scrollWheelZoom,
   onclickEditar,
-  onclickDeletar
+  onclickDeletar,
+  isOwner // flag se o usuário é dono do local
 }) {
   function MapPlaceholder() {
     return (
@@ -28,6 +30,7 @@ function PontoColetaCard({
       </p>
     );
   }
+
   return (
     <Card
       sx={{
@@ -72,20 +75,22 @@ function PontoColetaCard({
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions>
-        <Button
-          variant="contained"
-          startIcon={<EditLocationOutlinedIcon />}
-          onClick={() => onclickEditar()}>
-          Editar
-        </Button>
-        <Button
-          color="error"
-          endIcon={<DeleteForeverOutlinedIcon />}
-          onClick={() => onclickDeletar()}>
-          Deletar
-        </Button>
-      </CardActions>
+      {isOwner && ( // exibe botões somente se o usuário é o dono
+        <CardActions>
+          <Button
+            variant="contained"
+            startIcon={<EditLocationOutlinedIcon />}
+            onClick={() => onclickEditar()}>
+            Editar
+          </Button>
+          <Button
+            color="error"
+            endIcon={<DeleteForeverOutlinedIcon />}
+            onClick={() => onclickDeletar()}>
+            Deletar
+          </Button>
+        </CardActions>
+      )}
     </Card>
   );
 }

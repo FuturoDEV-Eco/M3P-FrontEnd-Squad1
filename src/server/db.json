@@ -229,6 +229,30 @@
         "Orgânico",
         "Baterias"
       ]
+    },
+    {
+      "id": 7,
+      "nome": "Novo ponto de Coleta para tstes",
+      "descricao": "Novo ponto de Coleta para tstes",
+      "usuarioId": 7,
+      "localizacao": {
+        "cep": "88070820",
+        "logradouro": "Rua Olavo Bilac",
+        "numero": "116",
+        "bairro": "Canto",
+        "cidade": "Florianópolis",
+        "estado": "SC"
+      },
+      "latitude": -27.5851666,
+      "longitude": -48.5846367,
+      "tipoResiduo": [
+        "Vidro",
+        "Metal",
+        "Papel",
+        "Plástico",
+        "Orgânico",
+        "Baterias"
+      ]
     }
   ]
 }
