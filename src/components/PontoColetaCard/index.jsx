@@ -11,12 +11,15 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
 import EditLocationOutlinedIcon from "@mui/icons-material/EditLocationOutlined";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew"; // Ícone para "Abrir no Maps"
+
 function PontoColetaCard({
   pontoColeta,
   zoom,
   scrollWheelZoom,
   onclickEditar,
-  onclickDeletar
+  onclickDeletar,
+  isOwner // flag se o usuário é dono do local
 }) {
   function MapPlaceholder() {
     return (
@@ -28,6 +31,10 @@ function PontoColetaCard({
       </p>
     );
   }
+
+  // Link para o Google Maps com base na latitude e longitude
+  const googleMapsLink = `https://www.google.com/maps?q=${pontoColeta.latitude},${pontoColeta.longitude}`;
+
   return (
     <Card
       sx={{
@@ -66,26 +73,41 @@ function PontoColetaCard({
             Tipo de resíduos aceitos:{" "}
             {
               <Typography component="span" variant="body2" color="primary">
-                {pontoColeta.tipoResiduo}
+                {/* Se for um array, separa por vírgula e espaço */}
+                {Array.isArray(pontoColeta.tipoResiduo)
+                  ? pontoColeta.tipoResiduo.join(", ")
+                  : pontoColeta.tipoResiduo}
               </Typography>
             }
           </Typography>
+          {/* Botão para abrir o local no Google Maps */}
+          <Button
+          variant="outlined"
+          color="primary"
+          endIcon={<OpenInNewIcon />}
+          href={googleMapsLink}
+          target="_blank" // abre o link em uma nova aba
+        >
+          Abrir no Maps
+        </Button>
         </CardContent>
       </CardActionArea>
-      <CardActions>
-        <Button
-          variant="contained"
-          startIcon={<EditLocationOutlinedIcon />}
-          onClick={() => onclickEditar()}>
-          Editar
-        </Button>
-        <Button
-          color="error"
-          endIcon={<DeleteForeverOutlinedIcon />}
-          onClick={() => onclickDeletar()}>
-          Deletar
-        </Button>
-      </CardActions>
+      {isOwner && ( // exibe botões somente se o usuário é o dono
+        <CardActions>
+          <Button
+            variant="contained"
+            startIcon={<EditLocationOutlinedIcon />}
+            onClick={() => onclickEditar()}>
+            Editar
+          </Button>
+          <Button
+            color="error"
+            endIcon={<DeleteForeverOutlinedIcon />}
+            onClick={() => onclickDeletar()}>
+            Deletar
+          </Button>
+        </CardActions>
+      )}
     </Card>
   );
 }

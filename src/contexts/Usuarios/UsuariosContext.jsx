@@ -5,10 +5,26 @@ export const UsuariosContext = createContext();
 
 export const UsuariosContextProvider = ({ children }) => {
   const [usuarios, setUsuarios] = useState([]);
+  const [usuarioLogado, setUsuarioLogado] = useState(null); // Armazena o usuário logado
 
   useEffect(() => {
     getUsuarios();
+    const user = localStorage.getItem("user"); // Recupera o usuário logado do localStorage
+    if (user) {
+      setUsuarioLogado(JSON.parse(user));
+    }
   }, []);
+
+  // Função para verificar se o usuário está logado
+  function isAuthenticated() {
+    return !!usuarioLogado;
+  }
+
+  // Verifica se o usuário logado é o dono do ponto de coleta
+function isOwner(pontoColeta) {
+  // Certifica-se de que os objetos `usuarioLogado` e `pontoColeta` existem e têm o campo `id` necessário
+  return usuarioLogado && pontoColeta && pontoColeta.usuarioId === usuarioLogado.id;
+}
 
   function getUsuarios() {
     fetch("http://localhost:3000/usuarios")
@@ -29,7 +45,6 @@ export const UsuariosContextProvider = ({ children }) => {
       fetch(`http://localhost:3000/usuarios?cpf=${usuario.cpf}`)
         .then((res) => res.json())
         .then((usuarioExistente) => {
-          // Se não existir usuário com o mesmo CPF, cadastrar
           if (!usuarioExistente.length) {
             fetch("http://localhost:3000/usuarios", {
               method: "POST",
@@ -83,7 +98,6 @@ export const UsuariosContextProvider = ({ children }) => {
     fetch(`http://localhost:3000/locaisColeta?usuarioId=${id}`)
       .then((res) => res.json())
       .then((pontosColeta) => {
-        // Se não houver pontos de coleta vinculados ao usuário, então deletar o usuário
         if (!pontosColeta.length) {
           fetch(`http://localhost:3000/usuarios/${id}`, {
             method: "DELETE"
@@ -142,6 +156,7 @@ export const UsuariosContextProvider = ({ children }) => {
             };
             localStorage.setItem("isAutenticado", true);
             localStorage.setItem("user", JSON.stringify(usuarioLogado));
+            setUsuarioLogado(usuarioLogado); // Armazena o usuário logado no estado
             toast.success("Usuário logado com sucesso", {
               position: "top-right",
               autoClose: 5000,
@@ -181,7 +196,10 @@ export const UsuariosContextProvider = ({ children }) => {
         usuarios,
         cadastrarUsuario,
         deletarUsuario,
-        login
+        login,
+        isAuthenticated,
+        isOwner, // Adiciona as funções de autenticação e propriedade
+        usuarioLogado // Exporta o usuário logado
       }}>
       {children}
     </UsuariosContext.Provider>
