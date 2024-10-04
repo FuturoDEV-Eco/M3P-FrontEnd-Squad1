@@ -8,6 +8,7 @@ import {
   FormControl,
   Checkbox,
   ListItemText,
+  Typography
 } from "@mui/material";
 import Input from "../Input/Index";
 import { ViaCepService } from "../../services/ViaCepService"; // Serviço de busca do ViaCEP
@@ -333,6 +334,21 @@ function FormCadastroColeta({ pontoColeta }) {
             InputLabelProps={{ shrink: true }}
           />{" "}
         </Grid>{" "}
+        <Grid item xs={12}>
+          <Typography variant="body1">
+            {getValues("latitude") && getValues("longitude") ? (
+              <a
+                href={`https://www.google.com/maps?q=${getValues("latitude")},${getValues("longitude")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Abrir no Google Maps
+              </a>
+            ) : (
+              "Aguarde para gerar o link do Google Maps após preencher o endereço."
+            )}
+          </Typography>
+        </Grid>
       </Grid>{" "}
       <Button variant="contained" type="submit">
         {" "}
