@@ -26,11 +26,11 @@ function FormLogin() {
       onSubmit={handleSubmit(onSubmit)}>
       <Input
         id="email"
-        label="Email"
+        label="E-Mail"
         type="email"
         fullWidth
         register={register("email", {
-          required: "O email é obrigatório",
+          required: "O e-mail é obrigatório",
           validate: {
             matchPath: (v) =>
               /^\w+([.-]?\w+)@\w+([.-]?\w+)(\.\w{2,3})+$/.test(v)

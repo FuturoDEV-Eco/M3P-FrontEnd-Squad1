@@ -123,37 +123,112 @@
   "locaisColeta": [
     {
       "id": 1,
-      "nome": "Supermercado Irmãos Gonçalves",
-      "descricao": "O Supermercado Irmãos Gonçalves é um estabelecimento de médio porte, localizado em uma área residencial movimentada, com uma ampla variedade de produtos. Possui um layout eficiente e um amplo estacionamento. Poderia servir como um ponto de coleta ideal devido à sua localização e alto volume de clientes.",
-      "usuarioId": 7,
+      "nome": "Ecoponto Itacorubi",
+      "descricao": "O Ecoponto do Itacorubi atende os moradores da localidade Itacorubi em Florianópolis",
+      "usuarioId": 1,
       "localizacao": {
-        "cep": "76804-142",
-        "logradouro": "Av. Sete de Setembro",
-        "numero": "2698",
-        "bairro": "Nossa Senhora das Graças",
-        "cidade": "Porto Velho",
-        "estado": "RO"
+        "cep": "88034-000",
+        "logradouro": "Rodovia Admar Gonzaga",
+        "numero": "72",
+        "bairro": "Itacorubi",
+        "cidade": "Florianópolis",
+        "estado": "SC"
       },
-      "latitude": -8.7616376,
-      "longitude": -63.8862763,
-      "tipoResiduo": "eletrônicos, e baterias"
+      "latitude": -27.5776395,
+      "longitude": -48.5124244,
+      "tipoResiduo": "Todos"
     },
     {
       "id": 2,
-      "nome": "Komprão Koch Atacadista",
-      "descricao": "O Komprão Koch Atacadista é um estabelecimento de grande porte, situado em uma região comercial vibrante, com uma vasta gama de produtos. Possui um design interno bem planejado e um estacionamento espaçoso. Devido à sua localização estratégica e grande fluxo de clientes, poderia funcionar como um excelente ponto de coleta.",
-      "usuarioId": 7,
+      "nome": "Ecoponto Capoeiras",
+      "descricao": "O Ecoponto do Capoeiras atende os moradores da localidade Capoeiras em Florianópolis",
+      "usuarioId": 1,
       "localizacao": {
-        "cep": "88113-365",
-        "logradouro": "Rua João José Martins",
-        "numero": "2360",
-        "bairro": "Real Parque",
-        "cidade": "São José",
+        "cep": "88090-500",
+        "logradouro": "R. Prof. Egídio Ferreira",
+        "numero": "1770",
+        "bairro": "Capoeiras",
+        "cidade": "Florianópolis",
         "estado": "SC"
       },
-      "latitude": -27.562825220321464,
-      "longitude": -48.638393893378705,
-      "tipoResiduo": "pilhas"
+      "latitude": -27.6078295,
+      "longitude": -48.6022429,
+      "tipoResiduo": "Todos, exceto gesso e amianto"
+    },
+    {
+      "id": 3,
+      "nome": "Ecoponto Morro das Pedras",
+      "descricao": "O Ecoponto do Morro das Pedras atende os moradores da localidade Morro das Pedras em Florianópolis",
+      "usuarioId": 1,
+      "localizacao": {
+        "cep": "88066-010",
+        "logradouro": "R. Francisco Viêira",
+        "numero": "198",
+        "bairro": "Morro das Pedras",
+        "cidade": "Florianópolis",
+        "estado": "SC"
+      },
+      "latitude": -27.706466,
+      "longitude": -48.5061779,
+      "tipoResiduo": "Todos"
+    },
+    {
+      "id": 4,
+      "nome": "Ecoponto Monte Cristo",
+      "descricao": "O Ecoponto do Monte Cristo atende os moradores da localidade Monte Cristo em Florianópolis",
+      "usuarioId": 1,
+      "localizacao": {
+        "cep": "88090-550",
+        "logradouro": "R. Joaquim Nabuco",
+        "numero": "2948",
+        "bairro": "Capoeiras",
+        "cidade": "Florianópolis",
+        "estado": "SC"
+      },
+      "latitude": -27.5901624,
+      "longitude": -48.6039243,
+      "tipoResiduo": "Todos"
+    },
+    {
+      "id": 5,
+      "nome": "Ecoponto Coloninha",
+      "descricao": "O Ecoponto da Coloninha atende os moradores da localidade Coloninha em Florianópolis",
+      "usuarioId": 1,
+      "localizacao": {
+        "cep": "88090-260",
+        "logradouro": "Rua Araci Vaz Callado",
+        "numero": "2045",
+        "bairro": "Canto",
+        "cidade": "Florianópolis",
+        "estado": "SC"
+      },
+      "latitude": -27.5904215,
+      "longitude": -48.5979571,
+      "tipoResiduo": "Todos"
+    },
+    {
+      "id": 6,
+      "nome": "Um novo ponto",
+      "descricao": "Um novo ponto sendo cadastrado",
+      "usuarioId": 7,
+      "localizacao": {
+        "cep": "89231418",
+        "logradouro": "Rua Vinte e Cinco de Dezembro",
+        "numero": "40",
+        "bairro": "Paranaguamirim",
+        "cidade": "Joinville",
+        "estado": "SC"
+      },
+      "latitude": -26.3478146,
+      "longitude": -48.7942284,
+      "tipoResiduo": [
+        "Vidro",
+        "Metal",
+        "Papel",
+        "Plástico",
+        "Orgânico",
+        "Baterias"
+      ]
     }
   ]
 }

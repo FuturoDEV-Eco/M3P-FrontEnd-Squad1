@@ -1,72 +1,97 @@
-# Projeto Recicla 365
+# Recicla365
 
-O Recicla365 é uma plataforma que facilita o gerenciamento de resíduos e o acesso a pontos
-de coleta de materiais recicláveis. Os usuários podem cadastrar novos pontos de coleta,
-encontrar pontos próximos em um mapa interativo (ou lista), visualizar informações sobre os
-materiais aceitos em cada ponto e registrar suas próprias contribuições para a reciclagem.
+[![React](https://img.shields.io/badge/React-17.0.2-blue?style=for-the-badge&logo=react&logoColor=white)](https://reactjs.org/) [![Node.js](https://img.shields.io/badge/Node.js-16.13.1-green?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/) [![JavaScript](https://img.shields.io/badge/JavaScript-ES6-%23F7DF1E.svg?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript) [![HTML5](https://img.shields.io/badge/HTML5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML) [![CSS3](https://img.shields.io/badge/CSS3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS) [![Git](https://img.shields.io/badge/Git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)](https://git-scm.com/) [![GitHub](https://img.shields.io/badge/GitHub-%23181717.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com)
 
-![PrintDashboard](https://i.imgur.com/Dz90zYW.png)
+## 📚 Introdução
 
-## Stack utilizada
+O **Recicla365** é uma plataforma que facilita o gerenciamento de resíduos e o acesso a pontos de coleta de materiais recicláveis. Os usuários podem cadastrar novos pontos de coleta, encontrar locais próximos em um mapa interativo, visualizar informações sobre os materiais aceitos em cada ponto e registrar suas próprias contribuições para a reciclagem.
 
-**Front-end:** React, MaterialUI
+## 🏆 Squad
 
-**Back-end:** Utilizado Json-server para simular a API
+- **André Luiz Amorim de Souza** - Project Owner - [GitHub :octocat: ](https://github.com/andreluizamorimdev)
 
-## Dependencias
+- **Viviani Lorigiola Harima**  - [GitHub :octocat: ](https://github.com/vivianiharima)
 
-- Material UI
+- **Deyse Aiala Rosa Vieira**  - [GitHub :octocat: ](https://github.com/deyseaiala)
 
-- Emotion
-- React hook form
-- React Leaftlet
-- React router dom
-- React toastify
+- **Lucas Pedro Lopes Corrêa**  - [GitHub :octocat: ](https://github.com/lucasplcorrea)
 
-## Dev Dependencias
+## 📋 Requisitos da Aplicação
 
-- Json server
-- vite
+A aplicação de Front-End foi desenvolvida utilizando React e contempla os seguintes requisitos:
 
-## Rodando localmente
+### Dashboard (página pública)
+- Exibir uma visão geral dos locais de coleta de resíduos cadastrados.
+- Uso de cards para mostrar a quantidade de usuários ativos e locais cadastrados.
+- Listagem dos locais de coleta em forma de lista ou de cards sem as opções de editar e excluir.
+- A lista de pontos de coleta é recebida via integração com o back-end e carrega sempre que a página é acessada.
 
-Clone o projeto
+### Login (página pública)
+- Acesso às páginas privadas do sistema. 
 
-```bash
-  git clone https://github.com/andreluizamorimdev/Recicla365_Projeto.git
-```
+### Cadastro de Usuários (página pública)
+Os usuários precisam fornecer:
+- Nome
+- Sexo
+- CPF
+- Data de Nascimento
+- E-mail
+- Senha
+- Endereço (usando ViaCEP)
 
-Entre no diretório do projeto
+### Cadastro de Locais de Coleta de Resíduos (página privada) 🔒
+Cada usuário pode cadastrar um ou mais locais de coleta, fornecendo:
+- Nome do local
+- Descrição do local
+- Identificador do Usuário
+- Localização (via ViaCEP)
+- Coordenadas geográficas (longitude e latitude)
+- Tipos de resíduos aceitos (ex.: Vidro, Metal, Papel, Plástico, Orgânico, Baterias)
+- Link do Google Maps apontando para o local cadastrado.
 
-```bash
-  cd Recicla365_Projeto
-```
+### Listagem de Locais de Coleta de Resíduos (página privada) 🔒
+- Tela para listar os locais, com botões para acessar, editar e deletar um local.
+- Cada usuário só pode excluir ou editar os pontos de coleta cadastrados por ele. 🔒
 
-Instale as dependências
+## 📊 Critérios de Avaliação
 
-```bash
-  npm install
-```
+Os critérios de avaliação das funcionalidades especificadas da aplicação de Front-End estão descritos a seguir:
 
-Abra mais um terminal no vscode
+| Nº | Critério de Avaliação | Descrição |
+|----|-----------------------|-----------|
+| 1 | Dashboard com cards informativos | :white_check_mark: |
+| 2 | Cadastro de usuários e Login | :white_check_mark: |
+| 3 | Listagem de pontos de coleta | :white_check_mark: |
+| 4 | Função de exclusão de pontos de coleta | :white_check_mark: |
+| 5 | Função de edição de pontos de coleta | :white_check_mark: |
+| 6 | Controle de rotas de navegação | :white_check_mark: |
+| 7 | Uso de Context API | :white_check_mark: |
+| 8 | Deploy na Vercel ou Netlify | :hourglass_flowing_sand: |
 
-Inicie o projeto
+## 💻 Tecnologias Utilizadas
 
-```bash
-  npm run dev
-```
+- **React**: Biblioteca JavaScript para construção de interfaces de usuário.
+- **Node.js**: Ambiente de execução para JavaScript no servidor.
+- **CSS**: Para estilização fina da aplicação.
+- **Material UI**: Para estilização avançada da aplicação.
+- **HTML**: Estruturação da aplicação web.
 
-Inicie o json-server
+## 🚀 Como Executar o Projeto
 
-```bash
-  npm run server
-```
-
-## Melhorias
-
-Melhorias que podem ser aplicadas são:
-
-- Melhorias no tema (adicionar mudança de tema dark/light)
-- Implementar as funcionalidades de editar e deletar usuario em uma pagina de perfil
-- Melhorar os mapas criados com o React Leaftlet para que desempenhe melhor em todos os tamanhos de telas.
-- Tornar alguns componentes mais reutilizaveis tornando facilitada a manutenção do código
+1. **Clone o repositório**:
+   ```bash
+   git clone https://github.com/SEU_USUARIO/recicla365.git
+   cd recicla365
+   ```
+2. **Instale as dependências**:
+   ```bash
+   npm install
+   ```
+3. **Execute o servidor**:
+   ```bash
+   npm run server
+   ```
+4. **Execute a aplicação**:
+   ```bash
+   npm run dev
+   ```
