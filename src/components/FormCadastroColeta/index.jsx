@@ -8,6 +8,7 @@ import {
   FormControl,
   Checkbox,
   ListItemText,
+  Typography
 } from "@mui/material";
 import Input from "../Input/Index";
 import { ViaCepService } from "../../services/ViaCepService"; // Serviço de busca do ViaCEP
@@ -54,6 +55,8 @@ function FormCadastroColeta({ pontoColeta }) {
     },
   });
 
+  const [linkMaps, setLinkMaps] = useState("");
+
   const navigate = useNavigate();
   const usuarioLogado = JSON.parse(localStorage.getItem("user"));
   const { cadastrarPontoColeta, editarPontoColeta } =
@@ -75,9 +78,16 @@ function FormCadastroColeta({ pontoColeta }) {
         const tiposResiduo = pontoColeta.tipoResiduo || [];
         setValue("tipoResiduo", tiposResiduo);
         setSelectedResiduos(tiposResiduo);
+        // Monta o link do Google Maps ao editar
+        if (pontoColeta.latitude && pontoColeta.longitude) {
+          setLinkMaps(
+            `https://www.google.com/maps?q=${pontoColeta.latitude},${pontoColeta.longitude}`
+          );
+        }
       } else {
         setIsEditMode(false);
         setSelectedResiduos([]);
+        setLinkMaps(""); // Limpa o link ao iniciar o cadastro
         // Limpar os campos do formulário
         setValue("nome", "");
         setValue("descricao", "");
@@ -129,6 +139,11 @@ function FormCadastroColeta({ pontoColeta }) {
         const { lat, lon } = data[0];
         setValue("latitude", lat);
         setValue("longitude", lon);
+
+        // Aguardar 1 segundo antes de montar o link do Google Maps
+        setTimeout(() => {
+          setLinkMaps(`https://www.google.com/maps?q=${lat},${lon}`);
+        }, 1000);
       }
     } catch (error) {
       console.error("Erro ao buscar coordenadas no Nominatim: ", error);
@@ -333,8 +348,23 @@ function FormCadastroColeta({ pontoColeta }) {
             InputLabelProps={{ shrink: true }}
           />{" "}
         </Grid>{" "}
+        <Grid item xs={12}>
+        <Typography variant="body1">
+            {linkMaps ? (
+              <a
+                href={linkMaps}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Abrir no Google Maps
+              </a>
+            ) : (
+              "Aguarde para gerar o link do Google Maps após preencher o endereço."
+            )}
+          </Typography>
+        </Grid>
       </Grid>{" "}
-      <Button variant="contained" type="submit">
+      <Button variant="contained" type="submit" color="primary">
         {" "}
         {isEditMode ? "Editar" : "Cadastrar"}{" "}
       </Button>{" "}
