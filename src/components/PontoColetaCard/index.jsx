@@ -33,7 +33,7 @@ function PontoColetaCard({
   }
 
   // Link para o Google Maps com base na latitude e longitude
-  const googleMapsLink = `https://www.google.com/maps?q=${pontoColeta.latitude},${pontoColeta.longitude}`;
+  const googleMapsLink = `https://www.google.com/maps?q=${pontoColeta.lat},${pontoColeta.lon}`;
 
   return (
     <Card
@@ -46,7 +46,7 @@ function PontoColetaCard({
       <CardMedia
         component={MapContainer}
         sx={{ width: 1000, height: 200 }}
-        center={[pontoColeta.latitude, pontoColeta.longitude]}
+        center={[pontoColeta.lat, pontoColeta.lon]}
         zoom={zoom}
         scrollWheelZoom={scrollWheelZoom}
         placeholder={<MapPlaceholder />}>
@@ -54,12 +54,11 @@ function PontoColetaCard({
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Marker position={[pontoColeta.latitude, pontoColeta.longitude]}>
+        <Marker position={[pontoColeta.lat, pontoColeta.lon]}>
           <Popup>
-            {pontoColeta.nome}. <br /> {pontoColeta.localizacao?.logradouro},{" "}
-            {pontoColeta.localizacao?.numero}, {pontoColeta.localizacao?.bairro}
-            , {pontoColeta.localizacao?.cidade} -{" "}
-            {pontoColeta.localizacao?.estado}.
+            {pontoColeta.nome}. <br /> {pontoColeta.logradouro},{" "}
+            {pontoColeta.numero}, {pontoColeta.bairro}, {pontoColeta.localidade}{" "}
+            - {pontoColeta.uf}.
           </Popup>
         </Marker>
       </CardMedia>
@@ -74,22 +73,22 @@ function PontoColetaCard({
             {
               <Typography component="span" variant="body2" color="primary">
                 {/* Se for um array, separa por vírgula e espaço */}
-                {Array.isArray(pontoColeta.tipoResiduo)
-                  ? pontoColeta.tipoResiduo.join(", ")
-                  : pontoColeta.tipoResiduo}
+                {Array.isArray(pontoColeta.tipos_residuo)
+                  ? pontoColeta.tipos_residuo.join(", ")
+                  : pontoColeta.tipos_residuo}
               </Typography>
             }
           </Typography>
           {/* Botão para abrir o local no Google Maps */}
           <Button
-          variant="outlined"
-          color="primary"
-          endIcon={<OpenInNewIcon />}
-          href={googleMapsLink}
-          target="_blank" // abre o link em uma nova aba
-        >
-          Abrir no Maps
-        </Button>
+            variant="outlined"
+            color="primary"
+            endIcon={<OpenInNewIcon />}
+            href={googleMapsLink}
+            target="_blank" // abre o link em uma nova aba
+          >
+            Abrir no Maps
+          </Button>
         </CardContent>
       </CardActionArea>
       {isOwner && ( // exibe botões somente se o usuário é o dono
