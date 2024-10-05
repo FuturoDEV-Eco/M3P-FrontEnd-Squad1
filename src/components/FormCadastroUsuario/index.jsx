@@ -68,7 +68,7 @@ function FormCadastroUsuario() {
     const usuario = {
       nome: data.nome,
       email: data.email,
-      password: data.senha,
+      senha: data.senha,
       sexo: data.sexo,
       dataNascimento: data.dataNascimento,
       cpf: FormatarCpf(data.cpf),

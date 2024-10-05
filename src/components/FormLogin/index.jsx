@@ -14,8 +14,8 @@ function FormLogin() {
   const { login } = useContext(UsuariosContext);
 
   const onSubmit = async (data) => {
-    const { email, password } = data;
-    await login(email, password);
+    const { email, senha } = data;
+    await login(email, senha);
   };
 
   return (
@@ -43,15 +43,15 @@ function FormLogin() {
         id="senha"
         label="Senha"
         type="password"
-        register={register("password", {
+        register={register("senha", {
           required: "A senha é obrigatória",
           minLength: {
             value: 6,
             message: "A senha deve ter no mínimo 6 caracteres"
           }
         })}
-        error={!!errors.password}
-        helperText={errors.password?.message}
+        error={!!errors.senha}
+        helperText={errors.senha?.message}
       />
 
       <Button variant="contained" type="submit">
