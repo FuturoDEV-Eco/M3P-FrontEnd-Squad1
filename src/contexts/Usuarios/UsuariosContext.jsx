@@ -12,8 +12,8 @@ export const UsuariosContextProvider = ({ children }) => {
     if (isAuthenticated()) {
       getUsuarios();
     }
-    const user = localStorage.getItem("@Auth:user"); // Recupera o usuário logado do localStorage
-    const tokenSalvo = localStorage.getItem("@Auth:token");
+    const user = sessionStorage.getItem("@Auth:user"); // Recupera o usuário logado do localStorage
+    const tokenSalvo = sessionStorage.getItem("@Auth:token");
     if (user && tokenSalvo) {
       setUsuarioLogado(JSON.parse(user));
     }
@@ -40,7 +40,6 @@ export const UsuariosContextProvider = ({ children }) => {
   function getUsuarios() {
     Api.get("/usuarios")
       .then((response) => {
-        console.log(response.data);
         setUsuarios(response.data);
       })
       .catch((error) => {
@@ -219,19 +218,19 @@ export const UsuariosContextProvider = ({ children }) => {
       }); */
   }
 
-  async function login(email, password) {
+  async function login(email, senha) {
     try {
-      const response = await Api.post("/usuarios/login", { email, password });
-      const token = response.data.token;
+      const response = await Api.post("/usuarios/login", { email, senha });
+      const token = `Bearer ${response.data.token}`;
       const usuario = {
         id: response.data.id,
         nome: response.data.nome,
         email: response.data.email
       };
-      localStorage.setItem("@Auth:token", token);
-      localStorage.setItem("@Auth:user", JSON.stringify(usuario));
+      sessionStorage.setItem("@Auth:token", token);
+      sessionStorage.setItem("@Auth:user", JSON.stringify(usuario));
       setUsuarioLogado(usuario);
-      localStorage.setItem("isAutenticado", true);
+      sessionStorage.setItem("isAutenticado", true);
       toast.success("Usuário logado com sucesso", {
         position: "top-right",
         autoClose: 5000,
@@ -290,9 +289,9 @@ export const UsuariosContextProvider = ({ children }) => {
   const logout = async () => {
     setUsuarios(null);
     Api.defaults.headers.common["Authorization"] = undefined;
-    localStorage.removeItem("@Auth:token");
-    localStorage.removeItem("@Auth:user");
-    localStorage.removeItem("isAutenticado");
+    sessionStorage.removeItem("@Auth:token");
+    sessionStorage.removeItem("@Auth:user");
+    sessionStorage.removeItem("isAutenticado");
   };
 
   return (

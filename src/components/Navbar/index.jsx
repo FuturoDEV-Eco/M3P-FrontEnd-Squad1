@@ -16,7 +16,7 @@ import { UsuariosContext } from "../../contexts/Usuarios/UsuariosContext";
 function Navbar({ navArrayLinks }) {
   const [open, setOpen] = useState(false);
   const usuarioLogado = JSON.parse(
-    localStorage.getItem("@Auth:user").toString()
+    sessionStorage.getItem("@Auth:user").toString()
   );
   const { logout } = useContext(UsuariosContext);
   const primeiroNome = usuarioLogado.nome.split(" ")[0];
