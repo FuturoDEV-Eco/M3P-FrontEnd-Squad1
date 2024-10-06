@@ -40,7 +40,7 @@ function Navbar({ navArrayLinks }) {
             <MenuIcon />
           </IconButton>
           <Typography sx={{ flexGrow: 1 }}>
-            Bem vindo, {primeiroNome}
+            Bem vindo(a), {primeiroNome}
           </Typography>
 
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
