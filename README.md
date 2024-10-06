@@ -10,27 +10,31 @@ O **Recicla365** é uma plataforma que facilita o gerenciamento de resíduos e o
 
 - **André Luiz Amorim de Souza** - Project Owner - [GitHub :octocat: ](https://github.com/andreluizamorimdev)
 
-- **Viviani Lorigiola Harima**  - [GitHub :octocat: ](https://github.com/vivianiharima)
+- **Viviani Lorigiola Harima** - [GitHub :octocat: ](https://github.com/vivianiharima)
 
-- **Deyse Aiala Rosa Vieira**  - [GitHub :octocat: ](https://github.com/deyseaiala)
+- **Deyse Aiala Rosa Vieira** - [GitHub :octocat: ](https://github.com/deyseaiala)
 
-- **Lucas Pedro Lopes Corrêa**  - [GitHub :octocat: ](https://github.com/lucasplcorrea)
+- **Lucas Pedro Lopes Corrêa** - [GitHub :octocat: ](https://github.com/lucasplcorrea)
 
 ## 📋 Requisitos da Aplicação
 
 A aplicação de Front-End foi desenvolvida utilizando React e contempla os seguintes requisitos:
 
 ### Dashboard (página pública)
+
 - Exibir uma visão geral dos locais de coleta de resíduos cadastrados.
 - Uso de cards para mostrar a quantidade de usuários ativos e locais cadastrados.
 - Listagem dos locais de coleta em forma de lista ou de cards sem as opções de editar e excluir.
 - A lista de pontos de coleta é recebida via integração com o back-end e carrega sempre que a página é acessada.
 
 ### Login (página pública)
-- Acesso às páginas privadas do sistema. 
+
+- Acesso às páginas privadas do sistema.
 
 ### Cadastro de Usuários (página pública)
+
 Os usuários precisam fornecer:
+
 - Nome
 - Sexo
 - CPF
@@ -40,7 +44,9 @@ Os usuários precisam fornecer:
 - Endereço (usando ViaCEP)
 
 ### Cadastro de Locais de Coleta de Resíduos (página privada) 🔒
+
 Cada usuário pode cadastrar um ou mais locais de coleta, fornecendo:
+
 - Nome do local
 - Descrição do local
 - Identificador do Usuário
@@ -50,6 +56,7 @@ Cada usuário pode cadastrar um ou mais locais de coleta, fornecendo:
 - Link do Google Maps apontando para o local cadastrado.
 
 ### Listagem de Locais de Coleta de Resíduos (página privada) 🔒
+
 - Tela para listar os locais, com botões para acessar, editar e deletar um local.
 - Cada usuário só pode excluir ou editar os pontos de coleta cadastrados por ele. 🔒
 
@@ -57,16 +64,16 @@ Cada usuário pode cadastrar um ou mais locais de coleta, fornecendo:
 
 Os critérios de avaliação das funcionalidades especificadas da aplicação de Front-End estão descritos a seguir:
 
-| Nº | Critério de Avaliação | Descrição |
-|----|-----------------------|-----------|
-| 1 | Dashboard com cards informativos | :white_check_mark: |
-| 2 | Cadastro de usuários e Login | :white_check_mark: |
-| 3 | Listagem de pontos de coleta | :white_check_mark: |
-| 4 | Função de exclusão de pontos de coleta | :white_check_mark: |
-| 5 | Função de edição de pontos de coleta | :white_check_mark: |
-| 6 | Controle de rotas de navegação | :white_check_mark: |
-| 7 | Uso de Context API | :white_check_mark: |
-| 8 | Deploy na Vercel ou Netlify | :hourglass_flowing_sand: |
+| Nº  | Critério de Avaliação                  | Descrição                |
+| --- | -------------------------------------- | ------------------------ |
+| 1   | Dashboard com cards informativos       | :white_check_mark:       |
+| 2   | Cadastro de usuários e Login           | :white_check_mark:       |
+| 3   | Listagem de pontos de coleta           | :white_check_mark:       |
+| 4   | Função de exclusão de pontos de coleta | :white_check_mark:       |
+| 5   | Função de edição de pontos de coleta   | :white_check_mark:       |
+| 6   | Controle de rotas de navegação         | :white_check_mark:       |
+| 7   | Uso de Context API                     | :white_check_mark:       |
+| 8   | Deploy na Vercel ou Netlify            | :hourglass_flowing_sand: |
 
 ## 💻 Tecnologias Utilizadas
 
@@ -87,11 +94,7 @@ Os critérios de avaliação das funcionalidades especificadas da aplicação de
    ```bash
    npm install
    ```
-3. **Execute o servidor**:
-   ```bash
-   npm run server
-   ```
-4. **Execute a aplicação**:
+3. **Execute a aplicação**:
    ```bash
    npm run dev
    ```
