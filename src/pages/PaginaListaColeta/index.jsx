@@ -6,19 +6,20 @@ import { Box, Typography, CircularProgress } from "@mui/material";
 import PontoColetaCard from "../../components/PontoColetaCard";
 
 function PaginaListaColeta() {
-  const { pontosColeta, deletarLocalColeta, getPontosColeta } = useContext(PontosColetaContext);
+  const { pontosColeta, deletarLocalColeta, getPontosColeta } =
+    useContext(PontosColetaContext);
   const { isOwner } = useContext(UsuariosContext); // Função que verifica se o usuário é o dono
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function fetchData() {
-      await getPontosColeta();
-      setLoading(false);
-    }
     fetchData();
-  }, [getPontosColeta]);
+  }, []);
 
+  async function fetchData() {
+    await getPontosColeta();
+    setLoading(false);
+  }
   function handleEdit(id) {
     navigate(`/coleta/cadastro/${id}`);
   }
@@ -50,7 +51,7 @@ function PaginaListaColeta() {
             scrollWheelZoom={false}
             onclickEditar={() => handleEdit(pontoColeta.id)}
             onclickDeletar={() => handleDelete(pontoColeta.id)}
-            isOwner={isOwner(pontoColeta)} // Passa a verificação de propriedade
+            isOwner={() => isOwner(pontoColeta)} // Passa a verificação de propriedade
           />
         ))}
       </Box>

@@ -1,4 +1,4 @@
-import { useState, useContext } from "react"; // Certifique-se de importar useState e useContext
+import { useState, useContext, useEffect } from "react"; // Certifique-se de importar useState e useContext
 import {
   Box,
   Card,
@@ -8,19 +8,51 @@ import {
 } from "@mui/material";
 import PontoColetaCard from "../../components/PontoColetaCard";
 import { PontosColetaContext } from "../../contexts/PontosColeta/PontosColetaContext";
-import { UsuariosContext } from "../../contexts/Usuarios/UsuariosContext";
 import GroupIcon from "@mui/icons-material/Group";
 import RecyclingIcon from "@mui/icons-material/Recycling";
 import { useNavigate } from "react-router-dom";
+import { Api } from "../../services/api";
+import { UsuariosContext } from "../../contexts/Usuarios/UsuariosContext";
 
 function PaginaHome() {
-  const { usuarios } = useContext(UsuariosContext);
   const { pontosColeta, deletarLocalColeta, getPontosColeta } =
     useContext(PontosColetaContext);
+  const { isOwner } = useContext(UsuariosContext);
+  const [totalPontosColeta, setTotalPontosColeta] = useState(0);
+  const [totalUsuariosCadastrados, setTotalUsuariosCadastrados] = useState(0); // Quantidade de usuários cadastrados
   const navigate = useNavigate();
 
   const [clickCount, setClickCount] = useState(0); // Contador de cliques
   const [timeoutId, setTimeoutId] = useState(null); // Para armazenar o ID do timeout
+
+  useEffect(() => {
+    fetchTotalPontosColeta();
+    fetchTotalUsuariosCadastrados(); // Chama a função para buscar usuários cadastrados
+  }, []);
+
+  const fetchTotalPontosColeta = async () => {
+    try {
+      const response = await Api.get("/dashboard/totalLocais");
+      setTotalPontosColeta(response.data);
+      /* const response = await fetch("http://localhost:3000/locaisColeta");
+      const data = await response.json();
+      setPontosColeta(data); */
+    } catch (error) {
+      console.error("Erro ao carregar os pontos de coleta:", error);
+    }
+  };
+
+  const fetchTotalUsuariosCadastrados = async () => {
+    try {
+      const reponse = await Api.get("/dashboard/totalUsuarios");
+      setTotalUsuariosCadastrados(reponse.data);
+      /* const response = await fetch("http://localhost:3000/usuarios");
+      const data = await response.json();
+      setUsuariosCadastrados(data.length); // Exibe a quantidade de usuários */
+    } catch (error) {
+      console.error("Erro ao carregar os usuários cadastrados:", error);
+    }
+  };
 
   function handleEdit(id) {
     navigate(`/coleta/cadastro/${id}`);
@@ -29,6 +61,7 @@ function PaginaHome() {
   async function handleDelete(id) {
     await deletarLocalColeta(id);
     await getPontosColeta();
+    await fetchTotalPontosColeta();
   }
 
   const handleCardClick = () => {
@@ -37,7 +70,9 @@ function PaginaHome() {
 
       // Verifica se o novo contador atingiu 10
       if (newCount === 10) {
-        alert("Clicar nesse card várias vezes não muda nada, reciclar seu lixo sim! Já reciclou seu lixo hoje? 🚮 🌍 ♻️");
+        alert(
+          "Clicar nesse card várias vezes não muda nada, reciclar seu lixo sim! Já reciclou seu lixo hoje? 🚮 🌍 ♻️"
+        );
         return 0; // Reseta o contador após o alerta
       }
 
@@ -83,7 +118,7 @@ function PaginaHome() {
               }}>
               <RecyclingIcon color="primary" />
               <Typography color="primary" variant="h5">
-                {pontosColeta.length}
+                {totalPontosColeta}
               </Typography>
             </CardContent>
           </CardActionArea>
@@ -104,7 +139,7 @@ function PaginaHome() {
               }}>
               <GroupIcon color="primary" />
               <Typography color="primary" variant="h5">
-                {usuarios.length}
+                {totalUsuariosCadastrados}
               </Typography>
             </CardContent>
           </CardActionArea>
@@ -118,6 +153,7 @@ function PaginaHome() {
               key={pontoColeta.id}
               pontoColeta={pontoColeta}
               zoom={13}
+              isOwner={() => isOwner(pontoColeta)}
               scrollWheelZoom={false}
               onclickEditar={() => handleEdit(pontoColeta.id)}
               onclickDeletar={() => handleDelete(pontoColeta.id)}

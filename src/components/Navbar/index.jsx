@@ -8,19 +8,23 @@ import {
   Typography
 } from "@mui/material";
 import NavListDrawer from "./NavListDrawer";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { NavLink, useNavigate } from "react-router-dom";
+import { UsuariosContext } from "../../contexts/Usuarios/UsuariosContext";
 
 function Navbar({ navArrayLinks }) {
   const [open, setOpen] = useState(false);
-  const usuarioLogado = JSON.parse(localStorage.getItem("user").toString());
+  const usuarioLogado = JSON.parse(
+    sessionStorage.getItem("@Auth:user").toString()
+  );
+  const { logout } = useContext(UsuariosContext);
   const primeiroNome = usuarioLogado.nome.split(" ")[0];
 
   const navigate = useNavigate();
 
   function handleLogOut() {
-    localStorage.clear();
+    logout();
     navigate("/login");
   }
   return (
@@ -36,7 +40,7 @@ function Navbar({ navArrayLinks }) {
             <MenuIcon />
           </IconButton>
           <Typography sx={{ flexGrow: 1 }}>
-            Bem vindo, {primeiroNome}
+            Bem vindo(a), {primeiroNome}
           </Typography>
 
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
