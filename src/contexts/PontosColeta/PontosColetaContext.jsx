@@ -74,28 +74,23 @@ export const PontosColetaContextProvider = ({ children }) => {
       headers: {
         Authorization: `${token}`
       }
-    }),
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-        .then(() => {
-          toast.success("Ponto de coleta cadastrado com sucesso!", {
-            position: "top-right",
-            autoClose: 5000,
-            theme: "colored"
-          });
-          getPontosColeta();
-        })
-        .catch((error) => {
-          console.error("Erro ao cadastrar ponto de coleta", error);
-          toast.error("Erro ao cadastrar ponto de coleta", {
-            position: "top-right",
-            autoClose: 5000,
-            theme: "colored"
-          });
+    })
+      .then(() => {
+        toast.success("Ponto de coleta cadastrado com sucesso!", {
+          position: "top-right",
+          autoClose: 5000,
+          theme: "colored"
         });
+        getPontosColeta();
+      })
+      .catch((error) => {
+        console.error("Erro ao cadastrar ponto de coleta", error);
+        toast.error("Erro ao cadastrar ponto de coleta", {
+          position: "top-right",
+          autoClose: 5000,
+          theme: "colored"
+        });
+      });
     /* fetch("http://localhost:3000/locaisColeta", {
       method: "POST",
       body: JSON.stringify(novoPontoColeta),
