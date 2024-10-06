@@ -172,7 +172,7 @@ function FormCadastroColeta({ pontoColeta }) {
     };
 
     if (isEditMode) {
-      editarPontoColeta(novoPontoColeta);
+      editarPontoColeta(novoPontoColeta, pontoColeta.id);
     } else {
       cadastrarPontoColeta(novoPontoColeta);
     }

@@ -3,6 +3,7 @@ import FormCadastroColeta from "../../components/FormCadastroColeta";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { Api } from "../../services/api";
 
 function PaginaCadastroColeta() {
   const { id } = useParams();
@@ -10,7 +11,17 @@ function PaginaCadastroColeta() {
 
   useEffect(() => {
     if (id) {
-      fetch("http://localhost:3000/locaisColeta/" + id)
+      Api.get("/locaisColeta/" + id)
+        .then((response) => setPontoColeta(response.data))
+        .catch((error) => {
+          console.error(error);
+          toast.error("Erro ao buscar ponto de coleta!", {
+            position: "top-right",
+            autoClose: 5000,
+            theme: "colored"
+          });
+        });
+      /* fetch("http://localhost:3000/locaisColeta/" + id)
         .then((response) => response.json())
         .then((dados) => {
           setPontoColeta(dados);
@@ -22,7 +33,7 @@ function PaginaCadastroColeta() {
             autoClose: 5000,
             theme: "colored"
           });
-        });
+        }); */
     }
   }, [id]);
 
