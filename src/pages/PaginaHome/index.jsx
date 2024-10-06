@@ -61,6 +61,7 @@ function PaginaHome() {
   async function handleDelete(id) {
     await deletarLocalColeta(id);
     await getPontosColeta();
+    await fetchTotalPontosColeta();
   }
 
   const handleCardClick = () => {
