@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 function NavListDrawer({ navArrayLinks, NavLink, setOpen }) {
   const navigate = useNavigate();
   function handleLogOut() {
-    localStorage.clear();
+    sessionStorage.clear();
     navigate("/login");
   }
   return (

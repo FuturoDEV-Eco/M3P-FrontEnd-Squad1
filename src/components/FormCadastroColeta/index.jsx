@@ -24,7 +24,7 @@ const residuosOptions = [
   "Papel",
   "Plástico",
   "Orgânico",
-  "Baterias",
+  "Baterias"
 ];
 
 function FormCadastroColeta({ pontoColeta }) {
@@ -35,83 +35,86 @@ function FormCadastroColeta({ pontoColeta }) {
     handleSubmit,
     setValue,
     getValues,
-    formState: { errors },
+    formState: { errors }
   } = useForm({
     defaultValues: {
       nome: "",
       descricao: "",
-      usuarioId: 0,
-      localizacao: {
-        cep: "",
-        logradouro: "",
-        numero: "",
-        bairro: "",
-        cidade: "",
-        estado: "",
-      },
+      usuario_id: 0,
+      cep: "",
+      logradouro: "",
+      numero: "",
+      bairro: "",
+      localidade: "",
+      uf: "",
       latitude: "",
       longitude: "",
-      tipoResiduo: [],
-    },
+      tipos_residuo: []
+    }
   });
 
   const [linkMaps, setLinkMaps] = useState("");
 
   const navigate = useNavigate();
-  const usuarioLogado = JSON.parse(localStorage.getItem("user"));
+  const usuarioLogado = JSON.parse(sessionStorage.getItem("@Auth:user"));
   const { cadastrarPontoColeta, editarPontoColeta } =
     useContext(PontosColetaContext);
 
-    useEffect(() => {
-      if (pontoColeta && pontoColeta.id) {
-        setIsEditMode(true);
-        setValue("nome", pontoColeta.nome);
-        setValue("descricao", pontoColeta.descricao);
-        setValue("localizacao.cep", pontoColeta.localizacao?.cep);
-        setValue("localizacao.logradouro", pontoColeta.localizacao?.logradouro);
-        setValue("localizacao.numero", pontoColeta.localizacao?.numero);
-        setValue("localizacao.bairro", pontoColeta.localizacao?.bairro);
-        setValue("localizacao.cidade", pontoColeta.localizacao?.cidade);
-        setValue("localizacao.estado", pontoColeta.localizacao?.estado);
-        setValue("latitude", pontoColeta.latitude);
-        setValue("longitude", pontoColeta.longitude);
-        const tiposResiduo = pontoColeta.tipoResiduo || [];
-        setValue("tipoResiduo", tiposResiduo);
-        setSelectedResiduos(tiposResiduo);
-        // Monta o link do Google Maps ao editar
-        if (pontoColeta.latitude && pontoColeta.longitude) {
-          setLinkMaps(
-            `https://www.google.com/maps?q=${pontoColeta.latitude},${pontoColeta.longitude}`
-          );
-        }
-      } else {
-        setIsEditMode(false);
-        setSelectedResiduos([]);
-        setLinkMaps(""); // Limpa o link ao iniciar o cadastro
-        // Limpar os campos do formulário
-        setValue("nome", "");
-        setValue("descricao", "");
-        setValue("localizacao.cep", "");
-        setValue("localizacao.logradouro", "");
-        setValue("localizacao.numero", "");
-        setValue("localizacao.bairro", "");
-        setValue("localizacao.cidade", "");
-        setValue("localizacao.estado", "");
-        setValue("latitude", "");
-        setValue("longitude", "");
-        setValue("tipoResiduo", []);
+  useEffect(() => {
+    if (pontoColeta && pontoColeta.id) {
+      setIsEditMode(true);
+      setValue("nome", pontoColeta.nome);
+      setValue("descricao", pontoColeta.descricao);
+      setValue("cep", pontoColeta.cep);
+      setValue("logradouro", pontoColeta.logradouro);
+      setValue("numero", pontoColeta.numero);
+      setValue("bairro", pontoColeta.bairro);
+      setValue("localidade", pontoColeta.localidade);
+      setValue("uf", pontoColeta.uf);
+      setValue("latitude", pontoColeta.lat);
+      setValue("longitude", pontoColeta.lon);
+      // Transformar a string de tipos_residuo em um array ao carregar o pontoColeta
+      const tiposResiduo = pontoColeta.tipos_residuo
+        ? pontoColeta.tipos_residuo.includes(",")
+          ? pontoColeta.tipos_residuo.split(",")
+          : [pontoColeta.tipos_residuo]
+        : [];
+      setValue("tipos_residuo", tiposResiduo);
+      setSelectedResiduos(tiposResiduo);
+      // Monta o link do Google Maps ao editar
+      if (pontoColeta.lat && pontoColeta.lon) {
+        setLinkMaps(
+          `https://www.google.com/maps?q=${pontoColeta.lat},${pontoColeta.lon}`
+        );
       }
-    }, [pontoColeta, setValue]);
+    } else {
+      setIsEditMode(false);
+      setSelectedResiduos([]);
+      setLinkMaps(""); // Limpa o link ao iniciar o cadastro
+      // Limpar os campos do formulário
+      setValue("nome", "");
+      setValue("descricao", "");
+      setValue("cep", "");
+      setValue("logradouro", "");
+      setValue("numero", "");
+      setValue("bairro", "");
+      setValue("localidade", "");
+      setValue("uf", "");
+      setValue("latitude", "");
+      setValue("longitude", "");
+      setValue("tipos_residuo", []);
+    }
+  }, [pontoColeta, setValue]);
 
   const buscarEnderecoPorCep = async () => {
-    const cep = getValues("localizacao.cep");
+    const cep = getValues("cep");
     try {
       const response = await ViaCepService.Get(cep);
       if (response) {
-        setValue("localizacao.logradouro", response.logradouro);
-        setValue("localizacao.bairro", response.bairro);
-        setValue("localizacao.cidade", response.localidade);
-        setValue("localizacao.estado", response.uf);
+        setValue("logradouro", response.logradouro);
+        setValue("bairro", response.bairro);
+        setValue("uf", response.uf);
+        setValue("localidade", response.localidade);
 
         // Adiciona o timer para buscar latitude e longitude no Nominatim 2 segundos após preencher os campos do endereço
         setTimeout(() => {
@@ -125,8 +128,11 @@ function FormCadastroColeta({ pontoColeta }) {
 
   // Função para buscar latitude e longitude no Nominatim
   const buscarLatitudeLongitude = async () => {
-    const { logradouro, bairro, cidade, estado } = getValues("localizacao");
-    const enderecoCompleto = `${logradouro}, ${bairro}, ${cidade}, ${estado}, Brasil`;
+    const logradouro = getValues("logradouro");
+    const bairro = getValues("bairro");
+    const localidade = getValues("localidade");
+    const uf = getValues("uf");
+    const enderecoCompleto = `${logradouro}, ${bairro}, ${localidade}, ${uf}, Brasil`;
 
     try {
       const response = await fetch(
@@ -155,28 +161,26 @@ function FormCadastroColeta({ pontoColeta }) {
   };
 
   const onSubmit = (data) => {
-    const localizacao = {
-      cep: data.localizacao.cep,
-      logradouro: data.localizacao.logradouro,
-      numero: data.localizacao.numero,
-      bairro: data.localizacao.bairro,
-      cidade: data.localizacao.cidade,
-      estado: data.localizacao.estado,
-    };
-  
+    // Transformar o array de tipos_residuo em uma string separada por vírgulas
+    const tiposResiduoString = selectedResiduos.join(",");
+
     const novoPontoColeta = {
-      id: isEditMode ? pontoColeta.id : 0,
       nome: data.nome,
       descricao: data.descricao,
-      usuarioId: usuarioLogado.id,
-      localizacao: localizacao,
-      latitude: Number(data.latitude),
-      longitude: Number(data.longitude),
-      tipoResiduo: data.tipoResiduo,
+      usuario_id: usuarioLogado.id,
+      cep: data.cep,
+      logradouro: data.logradouro,
+      numero: data.numero,
+      bairro: data.bairro,
+      localidade: data.localidade,
+      uf: data.uf,
+      lat: Number(data.latitude),
+      lon: Number(data.longitude),
+      tipos_residuo: tiposResiduoString
     };
-  
+
     if (isEditMode) {
-      editarPontoColeta(novoPontoColeta);
+      editarPontoColeta(novoPontoColeta, pontoColeta.id);
     } else {
       cadastrarPontoColeta(novoPontoColeta);
     }
@@ -187,8 +191,7 @@ function FormCadastroColeta({ pontoColeta }) {
     <Box
       component="form"
       sx={{ display: "grid", gap: 1 }}
-      onSubmit={handleSubmit(onSubmit)}
-    >
+      onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <Input
@@ -206,17 +209,16 @@ function FormCadastroColeta({ pontoColeta }) {
             <InputLabel id="tipoResiduo-label">Tipo Resíduo</InputLabel>
             <Select
               labelId="tipoResiduo-label"
-              id="tipoResiduo"
+              id="tipos_residuo"
               multiple
               value={selectedResiduos}
               onChange={(event) => {
                 const value = event.target.value;
                 setSelectedResiduos(value);
-                setValue("tipoResiduo", value);
+                setValue("tipos_residuo", value);
               }}
               renderValue={(selected) => selected.join(", ")}
-              error={!!errors.tipoResiduo}
-            >
+              error={!!errors.tipos_residuo}>
               {residuosOptions.map((residuo) => (
                 <MenuItem key={residuo} value={residuo}>
                   <Checkbox checked={selectedResiduos.indexOf(residuo) > -1} />
@@ -233,7 +235,7 @@ function FormCadastroColeta({ pontoColeta }) {
             multiline
             type="text"
             register={register("descricao", {
-              required: "A descrição é obrigatória",
+              required: "A descrição é obrigatória"
             })}
             error={!!errors.descricao}
             helperText={errors.descricao?.message}
@@ -245,12 +247,12 @@ function FormCadastroColeta({ pontoColeta }) {
             id="cep"
             label="Cep"
             type="text"
-            register={register("localizacao.cep", {
+            register={register("cep", {
               required: "O cep é obrigatório",
-              onBlur: handleCepBlur,
+              onBlur: handleCepBlur
             })}
-            error={!!errors.localizacao?.cep}
-            helperText={errors.localizacao?.cep?.message}
+            error={!!errors.cep}
+            helperText={errors.cep?.message}
             InputLabelProps={{ shrink: true }}
           />
         </Grid>
@@ -259,11 +261,11 @@ function FormCadastroColeta({ pontoColeta }) {
             id="logradouro"
             label="Logradouro"
             type="text"
-            register={register("localizacao.logradouro", {
-              required: "O logradouro é obrigatório",
+            register={register("logradouro", {
+              required: "O logradouro é obrigatório"
             })}
-            error={!!errors.localizacao?.logradouro}
-            helperText={errors.localizacao?.logradouro?.message}
+            error={!!errors.logradouro}
+            helperText={errors.logradouro?.message}
             InputLabelProps={{ shrink: true }}
           />
         </Grid>
@@ -272,11 +274,11 @@ function FormCadastroColeta({ pontoColeta }) {
             id="numero"
             label="Número"
             type="text"
-            register={register("localizacao.numero", {
-              required: "O número é obrigatório",
+            register={register("numero", {
+              required: "O número é obrigatório"
             })}
-            error={!!errors.localizacao?.numero}
-            helperText={errors.localizacao?.numero?.message}
+            error={!!errors.numero}
+            helperText={errors.numero?.message}
             InputLabelProps={{ shrink: true }}
           />
         </Grid>
@@ -285,38 +287,38 @@ function FormCadastroColeta({ pontoColeta }) {
             id="bairro"
             label="Bairro"
             type="text"
-            register={register("localizacao.bairro", {
-              required: "O bairro é obrigatório",
+            register={register("bairro", {
+              required: "O bairro é obrigatório"
             })}
-            error={!!errors.localizacao?.bairro}
-            helperText={errors.localizacao?.bairro?.message}
+            error={!!errors.bairro}
+            helperText={errors.bairro?.message}
             InputLabelProps={{ shrink: true }}
           />
         </Grid>
         <Grid item xs={12} sm={3}>
           <Input
-            id="cidade"
+            id="localidade"
             label="Cidade"
             type="text"
-            register={register("localizacao.cidade", {
-              required: "A cidade é obrigatória",
+            register={register("localidade", {
+              required: "A cidade é obrigatória"
             })}
-            error={!!errors.localizacao?.cidade}
-            helperText={errors.localizacao?.cidade?.message}
+            error={!!errors.localidade}
+            helperText={errors.localidade?.message}
             InputLabelProps={{ shrink: true }}
           />{" "}
         </Grid>{" "}
         <Grid item xs={12} sm={3}>
           {" "}
           <Input
-            id="estado"
+            id="uf"
             label="Estado"
             type="text"
-            register={register("localizacao.estado", {
-              required: "O estado é obrigatório",
+            register={register("uf", {
+              required: "O estado é obrigatório"
             })}
-            error={!!errors.localizacao?.estado}
-            helperText={errors.localizacao?.estado?.message}
+            error={!!errors.uf}
+            helperText={errors.uf?.message}
             InputLabelProps={{ shrink: true }}
           />{" "}
         </Grid>{" "}
@@ -327,7 +329,7 @@ function FormCadastroColeta({ pontoColeta }) {
             label="Latitude"
             type="text"
             register={register("latitude", {
-              required: "A latitude é obrigatória",
+              required: "A latitude é obrigatória"
             })}
             error={!!errors.latitude}
             helperText={errors.latitude?.message}
@@ -341,7 +343,7 @@ function FormCadastroColeta({ pontoColeta }) {
             label="Longitude"
             type="text"
             register={register("longitude", {
-              required: "A longitude é obrigatória",
+              required: "A longitude é obrigatória"
             })}
             error={!!errors.longitude}
             helperText={errors.longitude?.message}
@@ -349,13 +351,9 @@ function FormCadastroColeta({ pontoColeta }) {
           />{" "}
         </Grid>{" "}
         <Grid item xs={12}>
-        <Typography variant="body1">
+          <Typography variant="body1">
             {linkMaps ? (
-              <a
-                href={linkMaps}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href={linkMaps} target="_blank" rel="noopener noreferrer">
                 Abrir no Google Maps
               </a>
             ) : (

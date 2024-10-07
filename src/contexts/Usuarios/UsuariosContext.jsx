@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { Api } from "../../services/api";
 
 export const UsuariosContext = createContext();
 
@@ -8,11 +9,19 @@ export const UsuariosContextProvider = ({ children }) => {
   const [usuarioLogado, setUsuarioLogado] = useState(null); // Armazena o usuário logado
 
   useEffect(() => {
-    getUsuarios();
+    if (isAuthenticated()) {
+      getUsuarios();
+    }
+    const user = sessionStorage.getItem("@Auth:user"); // Recupera o usuário logado do localStorage
+    const tokenSalvo = sessionStorage.getItem("@Auth:token");
+    if (user && tokenSalvo) {
+      setUsuarioLogado(JSON.parse(user));
+    }
+    /* getUsuarios();
     const user = localStorage.getItem("user"); // Recupera o usuário logado do localStorage
     if (user) {
       setUsuarioLogado(JSON.parse(user));
-    }
+    } */
   }, []);
 
   // Função para verificar se o usuário está logado
@@ -21,13 +30,27 @@ export const UsuariosContextProvider = ({ children }) => {
   }
 
   // Verifica se o usuário logado é o dono do ponto de coleta
-function isOwner(pontoColeta) {
-  // Certifica-se de que os objetos `usuarioLogado` e `pontoColeta` existem e têm o campo `id` necessário
-  return usuarioLogado && pontoColeta && pontoColeta.usuarioId === usuarioLogado.id;
-}
+  function isOwner(pontoColeta) {
+    // Certifica-se de que os objetos `usuarioLogado` e `pontoColeta` existem e têm o campo `id` necessário
+    return (
+      usuarioLogado && pontoColeta && pontoColeta.usuarioId === usuarioLogado.id
+    );
+  }
 
   function getUsuarios() {
-    fetch("http://localhost:3000/usuarios")
+    Api.get("/usuarios")
+      .then((response) => {
+        setUsuarios(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("Erro ao buscar usuarios!", {
+          position: "top-right",
+          autoClose: 5000,
+          theme: "colored"
+        });
+      });
+    /* fetch("http://localhost:3000/usuarios")
       .then((response) => response.json())
       .then((dados) => setUsuarios(dados))
       .catch((error) => {
@@ -37,12 +60,29 @@ function isOwner(pontoColeta) {
           autoClose: 5000,
           theme: "colored"
         });
-      });
+      }); */
   }
 
   function cadastrarUsuario(usuario) {
     if (usuario) {
-      fetch(`http://localhost:3000/usuarios?cpf=${usuario.cpf}`)
+      Api.post("/usuarios", usuario)
+        .then(() => {
+          toast.success("Usuário cadastrado com sucesso!", {
+            position: "top-right",
+            autoClose: 5000,
+            theme: "colored"
+          });
+          getUsuarios();
+        })
+        .catch((error) => {
+          console.error("Erro ao cadastrar usuário", error);
+          toast.error("Erro ao cadastrar usuário!", {
+            position: "top-right",
+            autoClose: 5000,
+            theme: "colored"
+          });
+        });
+      /* fetch(`http://localhost:3000/usuarios?cpf=${usuario.cpf}`)
         .then((res) => res.json())
         .then((usuarioExistente) => {
           if (!usuarioExistente.length) {
@@ -84,7 +124,7 @@ function isOwner(pontoColeta) {
             autoClose: 5000,
             theme: "colored"
           });
-        });
+        }); */
     } else {
       toast.error("Dados do usuário inválidos", {
         position: "top-right",
@@ -95,7 +135,46 @@ function isOwner(pontoColeta) {
   }
 
   function deletarUsuario(id) {
-    fetch(`http://localhost:3000/locaisColeta?usuarioId=${id}`)
+    Api.get(`/locaisColeta?usuarioId=${id}`)
+      .then((res) => {
+        if (!res.data.length) {
+          Api.delete(`/usuarios/${id}`)
+            .then(() => {
+              toast.success("Usuário deletado com sucesso", {
+                position: "top-right",
+                autoClose: 5000,
+                theme: "colored"
+              });
+              getUsuarios();
+            })
+            .catch((error) => {
+              console.error("Erro ao deletar usuário", error);
+              toast.error("Erro ao deletar usuário", {
+                position: "top-right",
+                autoClose: 5000,
+                theme: "colored"
+              });
+            });
+        } else {
+          toast.error(
+            "Usuário possui pontos de coleta vinculados e não pode ser deletado",
+            {
+              position: "top-right",
+              autoClose: 5000,
+              theme: "colored"
+            }
+          );
+        }
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar pontos de coleta", error);
+        toast.error("Erro ao buscar pontos de coleta", {
+          position: "top-right",
+          autoClose: 5000,
+          theme: "colored"
+        });
+      });
+    /* fetch(`http://localhost:3000/locaisColeta?usuarioId=${id}`)
       .then((res) => res.json())
       .then((pontosColeta) => {
         if (!pontosColeta.length) {
@@ -136,12 +215,30 @@ function isOwner(pontoColeta) {
           autoClose: 5000,
           theme: "colored"
         });
-      });
+      }); */
   }
 
   async function login(email, senha) {
     try {
-      const response = await fetch("http://localhost:3000/usuarios");
+      const response = await Api.post("/usuarios/login", { email, senha });
+      const token = `Bearer ${response.data.token}`;
+      const usuario = {
+        id: response.data.id,
+        nome: response.data.nome,
+        email: response.data.email
+      };
+      sessionStorage.setItem("@Auth:token", token);
+      sessionStorage.setItem("@Auth:user", JSON.stringify(usuario));
+      setUsuarioLogado(usuario);
+      sessionStorage.setItem("isAutenticado", true);
+      toast.success("Usuário logado com sucesso", {
+        position: "top-right",
+        autoClose: 5000,
+        theme: "colored"
+      });
+      window.location.href = "/";
+
+      /* const response = await fetch("http://localhost:3000/usuarios");
       const dados = await response.json();
 
       let usuarioExiste = false;
@@ -179,7 +276,7 @@ function isOwner(pontoColeta) {
           autoClose: 5000,
           theme: "colored"
         });
-      }
+      } */
     } catch (error) {
       console.error("Erro na tentativa de login", error);
       toast.error("Erro na tentativa de login", {
@@ -189,6 +286,13 @@ function isOwner(pontoColeta) {
       });
     }
   }
+  const logout = async () => {
+    setUsuarios(null);
+    Api.defaults.headers.common["Authorization"] = undefined;
+    sessionStorage.removeItem("@Auth:token");
+    sessionStorage.removeItem("@Auth:user");
+    sessionStorage.removeItem("isAutenticado");
+  };
 
   return (
     <UsuariosContext.Provider
@@ -197,6 +301,7 @@ function isOwner(pontoColeta) {
         cadastrarUsuario,
         deletarUsuario,
         login,
+        logout,
         isAuthenticated,
         isOwner, // Adiciona as funções de autenticação e propriedade
         usuarioLogado // Exporta o usuário logado

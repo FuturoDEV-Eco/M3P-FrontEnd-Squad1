@@ -9,18 +9,18 @@ const ColetaList = ({ pontosColeta }) => {
             primary={ponto.nome}
             secondary={
               <>
-                <b>Endereço:</b> {ponto.localizacao.logradouro}, {ponto.localizacao.numero}, {ponto.localizacao.bairro}, {ponto.localizacao.cidade}, {ponto.localizacao.estado}, CEP: {ponto.localizacao.cep}
+                <b>Endereço:</b> {ponto.logradouro}, {ponto.numero},{" "}
+                {ponto.bairro}, {ponto.localidade}, {ponto.uf}, CEP: {ponto.cep}
                 <br />
-                <b>Tipo de Resíduo:</b> {ponto.tipoResiduo}
+                <b>Tipo de Resíduo:</b> {ponto.tipos_residuo}
                 <br />
                 <Button
                   variant="contained"
                   color="primary"
-                  href={`https://www.google.com/maps/search/?api=1&query=${ponto.latitude},${ponto.longitude}`}
+                  href={`https://www.google.com/maps/search/?api=1&query=${ponto.lat},${ponto.lon}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ marginTop: "10px" }}
-                >
+                  style={{ marginTop: "10px" }}>
                   Abrir no Maps
                 </Button>
               </>
