@@ -64,16 +64,17 @@ Cada usuário pode cadastrar um ou mais locais de coleta, fornecendo:
 
 Os critérios de avaliação das funcionalidades especificadas da aplicação de Front-End estão descritos a seguir:
 
-| Nº  | Critério de Avaliação                  | Descrição                |
-| --- | -------------------------------------- | ------------------------ |
-| 1   | Dashboard com cards informativos       | :white_check_mark:       |
-| 2   | Cadastro de usuários e Login           | :white_check_mark:       |
-| 3   | Listagem de pontos de coleta           | :white_check_mark:       |
-| 4   | Função de exclusão de pontos de coleta | :white_check_mark:       |
-| 5   | Função de edição de pontos de coleta   | :white_check_mark:       |
-| 6   | Controle de rotas de navegação         | :white_check_mark:       |
-| 7   | Uso de Context API                     | :white_check_mark:       |
-| 8   | Deploy na Vercel ou Netlify            | :hourglass_flowing_sand: |
+| Nº  | Critério de Avaliação                  | Descrição          |
+| --- | -------------------------------------- | ------------------ |
+| 1   | Dashboard com cards informativos       | :white_check_mark: |
+| 2   | Cadastro de usuários e Login           | :white_check_mark: |
+| 3   | Listagem de pontos de coleta           | :white_check_mark: |
+| 4   | Função de exclusão de pontos de coleta | :white_check_mark: |
+| 5   | Função de edição de pontos de coleta   | :white_check_mark: |
+| 6   | Controle de rotas de navegação         | :white_check_mark: |
+| 7   | Uso de Context API                     | :white_check_mark: |
+| 8   | Integração do Frontend com o Backend   | :white_check_mark: |
+| 0   | Deploy na Vercel ou Netlify            | :white_check_mark: |
 
 ## 💻 Tecnologias Utilizadas
 
@@ -87,14 +88,18 @@ Os critérios de avaliação das funcionalidades especificadas da aplicação de
 
 1. **Clone o repositório**:
    ```bash
-   git clone https://github.com/SEU_USUARIO/recicla365.git
-   cd recicla365
+   git clone https://github.com/FuturoDEV-Eco/M3P-FrontEnd-Squad1.git
+   cd M3P-FrontEnd-Squad1
    ```
 2. **Instale as dependências**:
    ```bash
    npm install
    ```
-3. **Execute a aplicação**:
+3. **Crie e configure o .env.development conforme o example**:
+   ```bash
+   cp .env-example .env.development
+   ```
+4. **Execute a aplicação em modo desenvolvimento**:
    ```bash
    npm run dev
    ```

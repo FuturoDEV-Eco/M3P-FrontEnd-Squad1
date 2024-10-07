@@ -25,3 +25,8 @@ dist-ssr
 
 #Test DB 
 src/server/db.json
+
+# Variaveis de ambiente
+.env
+.env.development
+.env.production
