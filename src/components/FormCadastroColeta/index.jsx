@@ -73,7 +73,12 @@ function FormCadastroColeta({ pontoColeta }) {
       setValue("uf", pontoColeta.uf);
       setValue("latitude", pontoColeta.lat);
       setValue("longitude", pontoColeta.lon);
-      const tiposResiduo = pontoColeta.tipos_residuo || [];
+      // Transformar a string de tipos_residuo em um array ao carregar o pontoColeta
+      const tiposResiduo = pontoColeta.tipos_residuo
+        ? pontoColeta.tipos_residuo.includes(",")
+          ? pontoColeta.tipos_residuo.split(",")
+          : [pontoColeta.tipos_residuo]
+        : [];
       setValue("tipos_residuo", tiposResiduo);
       setSelectedResiduos(tiposResiduo);
       // Monta o link do Google Maps ao editar
@@ -108,8 +113,8 @@ function FormCadastroColeta({ pontoColeta }) {
       if (response) {
         setValue("logradouro", response.logradouro);
         setValue("bairro", response.bairro);
-        setValue("uf", response.localidade);
-        setValue("localidade", response.uf);
+        setValue("uf", response.uf);
+        setValue("localidade", response.localidade);
 
         // Adiciona o timer para buscar latitude e longitude no Nominatim 2 segundos após preencher os campos do endereço
         setTimeout(() => {
@@ -156,6 +161,9 @@ function FormCadastroColeta({ pontoColeta }) {
   };
 
   const onSubmit = (data) => {
+    // Transformar o array de tipos_residuo em uma string separada por vírgulas
+    const tiposResiduoString = selectedResiduos.join(",");
+
     const novoPontoColeta = {
       nome: data.nome,
       descricao: data.descricao,
@@ -168,7 +176,7 @@ function FormCadastroColeta({ pontoColeta }) {
       uf: data.uf,
       lat: Number(data.latitude),
       lon: Number(data.longitude),
-      tipos_residuo: data.tipos_residuo
+      tipos_residuo: tiposResiduoString
     };
 
     if (isEditMode) {
