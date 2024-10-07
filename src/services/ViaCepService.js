@@ -1,4 +1,4 @@
-const API_VIACEP_URL = "http://viacep.com.br/ws/CEP/json/";
+const API_VIACEP_URL = "https://viacep.com.br/ws/CEP/json/";
 
 const normalizeString = (str) => {
   return str.replace("-", "").trim();
