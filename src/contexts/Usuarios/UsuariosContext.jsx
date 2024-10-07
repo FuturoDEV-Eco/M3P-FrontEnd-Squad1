@@ -33,7 +33,9 @@ export const UsuariosContextProvider = ({ children }) => {
   function isOwner(pontoColeta) {
     // Certifica-se de que os objetos `usuarioLogado` e `pontoColeta` existem e têm o campo `id` necessário
     return (
-      usuarioLogado && pontoColeta && pontoColeta.usuarioId === usuarioLogado.id
+      usuarioLogado &&
+      pontoColeta &&
+      pontoColeta.usuario_id === usuarioLogado.id
     );
   }
 
@@ -72,6 +74,7 @@ export const UsuariosContextProvider = ({ children }) => {
             autoClose: 5000,
             theme: "colored"
           });
+          getUsuarios();
         })
         .catch((error) => {
           console.error("Erro ao cadastrar usuário", error);

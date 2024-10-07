@@ -153,7 +153,7 @@ function PaginaHome() {
               key={pontoColeta.id}
               pontoColeta={pontoColeta}
               zoom={13}
-              isOwner={() => isOwner(pontoColeta)}
+              isOwner={isOwner(pontoColeta)}
               scrollWheelZoom={false}
               onclickEditar={() => handleEdit(pontoColeta.id)}
               onclickDeletar={() => handleDelete(pontoColeta.id)}
