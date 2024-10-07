@@ -74,7 +74,7 @@ Os critérios de avaliação das funcionalidades especificadas da aplicação de
 | 6   | Controle de rotas de navegação         | :white_check_mark: |
 | 7   | Uso de Context API                     | :white_check_mark: |
 | 8   | Integração do Frontend com o Backend   | :white_check_mark: |
-| 0   | Deploy na Vercel ou Netlify            | :white_check_mark: |
+| 9   | Deploy na Vercel ou Netlify            | :white_check_mark: |
 
 ## 💻 Tecnologias Utilizadas
 
