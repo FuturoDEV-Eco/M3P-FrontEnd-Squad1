@@ -51,7 +51,7 @@ function PaginaListaColeta() {
             scrollWheelZoom={false}
             onclickEditar={() => handleEdit(pontoColeta.id)}
             onclickDeletar={() => handleDelete(pontoColeta.id)}
-            isOwner={() => isOwner(pontoColeta)} // Passa a verificação de propriedade
+            isOwner={isOwner(pontoColeta)} // Passa a verificação de propriedade
           />
         ))}
       </Box>
