@@ -72,7 +72,6 @@ export const UsuariosContextProvider = ({ children }) => {
             autoClose: 5000,
             theme: "colored"
           });
-          getUsuarios();
         })
         .catch((error) => {
           console.error("Erro ao cadastrar usuário", error);

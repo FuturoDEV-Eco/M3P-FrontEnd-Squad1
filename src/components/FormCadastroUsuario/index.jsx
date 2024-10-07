@@ -80,7 +80,6 @@ function FormCadastroUsuario() {
       uf: getValues("estado"),
       complemento: getValues("complemento")
     };
-    console.log(usuario);
     cadastrarUsuario(usuario);
   };
 
